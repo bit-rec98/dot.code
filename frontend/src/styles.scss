@@ -4,21 +4,25 @@
 
 /* You can add global styles to this file, and also import other style files */
 
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-
-body{
+body {
   background-color: var(--black);
   color: var(--white);
 }
 
-:root{
-  --white: #CCCCCC;
+:root {
+  --white: #cccccc;
   --black: #121212;
+}
+
+/* Ajuste para scroll considerando el header fijo */
+html {
+  scroll-padding-top: 80px;
 }

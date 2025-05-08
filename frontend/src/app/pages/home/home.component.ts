@@ -23,8 +23,7 @@ import { ContactComponent } from '../../components/contact/contact.component';
     CommonModule,
     NgFor,
     ReactiveFormsModule,
-    RouterLink,
-    ContactComponent
+    ContactComponent,
   ],
   providers: [],
   templateUrl: './home.component.html',
@@ -612,6 +611,21 @@ export class HomeComponent implements OnInit, OnDestroy {
       console.log('Form submitted:', this.contactForm.value);
       // Here you would send the form data to your backend
       this.contactForm.reset();
+    }
+  }
+
+  /**
+   * Método para navegar a una sección específica de la página
+   * - Utiliza el ID de la sección para encontrar el elemento en el DOM
+   * @param sectionId
+   */
+  scrollToSection(sectionId: string): void {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
     }
   }
 }

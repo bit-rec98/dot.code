@@ -42,7 +42,7 @@
     <ul class="flex flex-col gap-6">
       <li>
         <a
-          routerLink="/"
+          (click)="scrollToSection('ctaSection')"
           (click)="close()"
           class="text-lg py-2 block transition-colors"
           style="color: var(--white)"
@@ -52,7 +52,7 @@
       </li>
       <li>
         <a
-          routerLink="/about"
+          (click)="scrollToSection('aboutSection')"
           (click)="close()"
           class="text-lg py-2 block transition-colors"
           style="color: var(--white)"
@@ -62,7 +62,7 @@
       </li>
       <li>
         <a
-          routerLink="/projects"
+          (click)="scrollToSection('portfolioSection')"
           (click)="close()"
           class="text-lg py-2 block transition-colors"
           style="color: var(--white)"
@@ -72,7 +72,7 @@
       </li>
       <li>
         <a
-          routerLink="/contact"
+          (click)="scrollToSection('contactSection')"
           (click)="close()"
           class="text-lg py-2 block transition-colors"
           style="color: var(--white)"

@@ -4,39 +4,61 @@
   style="background-color: var(--black); color: var(--white)"
 >
   <nav class="flex flex-row items-center justify-between p-2 md:p-4">
-    <a routerLink="/" class="text-2xl font-bold" style="color: var(--white)"
+    <a
+      (click)="scrollToSection('ctaSection')"
+      class="text-2xl font-bold"
+      style="color: var(--white); cursor: pointer"
       >dot.dev</a
     >
 
     <!-- Menu for desktop - hidden on mobile -->
     <ul class="hidden md:flex flex-row items-center justify-between gap-4">
       <li>
-        <a routerLink="" class="transition-colors" style="color: var(--white)"
+        <a
+          (click)="scrollToSection('ctaSection')"
+          class="transition-colors"
+          style="color: var(--white); cursor: pointer"
           >Inicio</a
         >
       </li>
       <li>
         <a
-          routerLink="/about"
+          (click)="scrollToSection('servicesSection')"
           class="transition-colors"
-          style="color: var(--white)"
-          >Acerca de nosotros</a
+          style="color: var(--white); cursor: pointer"
+          >Servicios</a
         >
       </li>
       <li>
         <a
-          routerLink="/projects"
+          (click)="scrollToSection('portfolioSection')"
           class="transition-colors"
-          style="color: var(--white)"
+          style="color: var(--white); cursor: pointer"
           >Portafolio</a
         >
       </li>
       <li>
         <a
-          routerLink="/contact"
+          (click)="scrollToSection('aboutSection')"
           class="transition-colors"
-          style="color: var(--white)"
-          >Contactanos</a
+          style="color: var(--white); cursor: pointer"
+          >Acerca de nosotros</a
+        >
+      </li>
+      <li>
+        <a
+          (click)="scrollToSection('faqSection')"
+          class="transition-colors"
+          style="color: var(--white); cursor: pointer"
+          >FAQ</a
+        >
+      </li>
+      <li>
+        <a
+          (click)="scrollToSection('contactSection')"
+          class="transition-colors"
+          style="color: var(--white); cursor: pointer"
+          >Contacto</a
         >
       </li>
     </ul>
