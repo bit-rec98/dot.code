@@ -1,0 +1,14 @@
+#header{
+  background-color: var(--black);
+}
+
+:host {
+  a {
+    color: var(--white);
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #2563eb;
+    }
+  }
+}
