@@ -1,0 +1,85 @@
+<div
+  class="fixed inset-0 bg-opacity-50 z-40 transition-opacity duration-300"
+  style="background-color: rgba(18, 18, 18, 0.5)"
+  [class.opacity-0]="!isOpen"
+  [class.pointer-events-none]="!isOpen"
+  [class.opacity-100]="isOpen"
+  (click)="close()"
+></div>
+
+<div
+  class="fixed inset-y-0 left-0 max-w-xs w-full shadow-lg z-50 transform transition-transform duration-300 ease-in-out"
+  style="background-color: var(--black); color: var(--white)"
+  [class.translate-x-0]="isOpen"
+  [class.translate-x-[-100%]]="!isOpen"
+>
+  <div class="p-4">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-bold" style="color: var(--white)">Menu</h2>
+      <button
+        (click)="close()"
+        class="p-2 rounded-full hover:bg-opacity-20"
+        style="color: var(--white)"
+        aria-label="Close menu"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <ul class="flex flex-col gap-6">
+      <li>
+        <a
+          (click)="scrollToSection('ctaSection')"
+          (click)="close()"
+          class="text-lg py-2 block transition-colors"
+          style="color: var(--white)"
+          [ngStyle]="{ 'hover:color': '#2563eb' }"
+          >Inicio</a
+        >
+      </li>
+      <li>
+        <a
+          (click)="scrollToSection('aboutSection')"
+          (click)="close()"
+          class="text-lg py-2 block transition-colors"
+          style="color: var(--white)"
+          [ngStyle]="{ 'hover:color': '#2563eb' }"
+          >Acerca de nosotros</a
+        >
+      </li>
+      <li>
+        <a
+          (click)="scrollToSection('portfolioSection')"
+          (click)="close()"
+          class="text-lg py-2 block transition-colors"
+          style="color: var(--white)"
+          [ngStyle]="{ 'hover:color': '#2563eb' }"
+          >Portafolio</a
+        >
+      </li>
+      <li>
+        <a
+          (click)="scrollToSection('contactSection')"
+          (click)="close()"
+          class="text-lg py-2 block transition-colors"
+          style="color: var(--white)"
+          [ngStyle]="{ 'hover:color': '#2563eb' }"
+          >Contactanos</a
+        >
+      </li>
+    </ul>
+  </div>
+</div>

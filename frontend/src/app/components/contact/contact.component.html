@@ -1,0 +1,236 @@
+<section class="px-4 md:px-8 lg:px-16 max-w-7xl mx-auto">
+  <article
+    class="bg-opacity-10 backdrop-blur-md rounded-lg p-8 shadow-lg"
+    style="background-color: rgba(18, 18, 18, 0.6)"
+    id="contactSection"
+  >
+    <h1 class="text-3xl font-bold mb-8 text-center" style="color: var(--white)">
+      Contáctanos
+    </h1>
+
+    <p class="text-base sm:text-lg">
+      ¿Tienes un proyecto en mente? Hablemos sobre cómo podemos ayudarte a
+      alcanzar tus objetivos.
+    </p>
+
+    <!-- Success message -->
+    <div
+      *ngIf="formSubmitted"
+      class="bg-green-800 text-white p-4 rounded mb-6 text-center"
+    >
+      <p>¡Gracias por contactarnos! Te responderemos pronto.</p>
+    </div>
+
+    <!-- Contact form -->
+    <form
+      [formGroup]="contactForm"
+      (ngSubmit)="onSubmit()"
+      *ngIf="!formSubmitted"
+      class="space-y-6"
+    >
+      <!-- Name field -->
+      <div>
+        <label
+          for="name"
+          class="block mb-2 font-medium"
+          style="color: var(--white)"
+          >Nombre</label
+        >
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          class="w-full px-4 py-3 rounded border focus:outline-none focus:ring-2 focus:ring-blue-600 bg-opacity-20"
+          style="
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            border-color: rgba(204, 204, 204, 0.3);
+          "
+          placeholder="Tu nombre"
+          [ngClass]="{ 'border-red-500': name?.invalid && name?.touched }"
+        />
+        <!-- Error messages -->
+        <div
+          *ngIf="name?.invalid && name?.touched"
+          class="mt-1 text-sm text-red-500"
+        >
+          <div *ngIf="name?.errors?.['required']">El nombre es requerido</div>
+          <div *ngIf="name?.errors?.['minlength']">
+            El nombre debe tener al menos 3 caracteres
+          </div>
+        </div>
+      </div>
+
+      <!-- Email field -->
+      <div>
+        <label
+          for="email"
+          class="block mb-2 font-medium"
+          style="color: var(--white)"
+          >Email</label
+        >
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          class="w-full px-4 py-3 rounded border focus:outline-none focus:ring-2 focus:ring-blue-600 bg-opacity-20"
+          style="
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            border-color: rgba(204, 204, 204, 0.3);
+          "
+          placeholder="ejemplo@correo.com"
+          [ngClass]="{ 'border-red-500': email?.invalid && email?.touched }"
+        />
+        <!-- Error messages -->
+        <div
+          *ngIf="email?.invalid && email?.touched"
+          class="mt-1 text-sm text-red-500"
+        >
+          <div *ngIf="email?.errors?.['required']">El email es requerido</div>
+          <div *ngIf="email?.errors?.['email']">
+            Por favor, introduce un email válido
+          </div>
+        </div>
+      </div>
+
+      <!-- Subject field -->
+      <div>
+        <label
+          for="subject"
+          class="block mb-2 font-medium"
+          style="color: var(--white)"
+          >Asunto</label
+        >
+        <input
+          type="text"
+          id="subject"
+          formControlName="subject"
+          class="w-full px-4 py-3 rounded border focus:outline-none focus:ring-2 focus:ring-blue-600 bg-opacity-20"
+          style="
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            border-color: rgba(204, 204, 204, 0.3);
+          "
+          placeholder="Asunto de tu mensaje"
+          [ngClass]="{ 'border-red-500': subject?.invalid && subject?.touched }"
+        />
+        <!-- Error messages -->
+        <div
+          *ngIf="subject?.invalid && subject?.touched"
+          class="mt-1 text-sm text-red-500"
+        >
+          <div *ngIf="subject?.errors?.['required']">
+            El asunto es requerido
+          </div>
+        </div>
+      </div>
+
+      <!-- Message field -->
+      <div>
+        <label
+          for="message"
+          class="block mb-2 font-medium"
+          style="color: var(--white)"
+          >Mensaje</label
+        >
+        <textarea
+          id="message"
+          formControlName="message"
+          rows="5"
+          class="w-full px-4 py-3 rounded border focus:outline-none focus:ring-2 focus:ring-blue-600 bg-opacity-20"
+          style="
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+            border-color: rgba(204, 204, 204, 0.3);
+          "
+          placeholder="Escribe tu mensaje aquí..."
+          [ngClass]="{ 'border-red-500': message?.invalid && message?.touched }"
+        ></textarea>
+        <!-- Error messages -->
+        <div
+          *ngIf="message?.invalid && message?.touched"
+          class="mt-1 text-sm text-red-500"
+        >
+          <div *ngIf="message?.errors?.['required']">
+            El mensaje es requerido
+          </div>
+          <div *ngIf="message?.errors?.['minlength']">
+            El mensaje debe tener al menos 10 caracteres
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit button -->
+      <div class="text-center">
+        <button
+          type="submit"
+          class="px-8 py-3 rounded font-medium transition-colors duration-300"
+          [ngClass]="{
+            'bg-blue-600 text-white hover:bg-blue-700': contactForm.valid,
+            'bg-gray-400 text-gray-200 cursor-not-allowed': contactForm.invalid
+          }"
+        >
+          Enviar mensaje
+        </button>
+      </div>
+    </form>
+
+    <!-- Contact information -->
+    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div class="text-center">
+        <div class="flex justify-center mb-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            style="color: var(--white)"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+            />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-1" style="color: var(--white)">
+          Email
+        </h3>
+        <p style="color: var(--white)">info&#64;dotdev.com</p>
+      </div>
+
+      <div class="text-center">
+        <div class="flex justify-center mb-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            style="color: var(--white)"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+            />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold mb-1" style="color: var(--white)">
+          Ubicación
+        </h3>
+        <p style="color: var(--white)">Córdoba, Argentina</p>
+      </div>
+    </div>
+  </article>
+</section>

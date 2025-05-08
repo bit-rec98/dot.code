@@ -1,0 +1,55 @@
+:host {
+  a {
+    color: var(--white);
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: #2563eb;
+    }
+  }
+}
+
+.sidenav-container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  pointer-events: none;
+  height: 100vh;
+  /* Asegura altura completa */
+}
+
+.sidenav {
+  width: 33vw;
+  /* 1/3 del ancho de la ventana */
+  min-width: 250px;
+  /* Mínimo para dispositivos muy pequeños */
+  max-width: 350px;
+  /* Máximo en pantallas grandes */
+  height: 100%;
+  /* Altura completa */
+  pointer-events: auto;
+}
+
+::ng-deep .mat-drawer-inner-container {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.sidenav-content {
+  pointer-events: auto;
+  /* Cambiado a auto para que los enlaces sean clicables */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mejora visibilidad en móvil */
+@media (max-width: 767px) {
+  .sidenav {
+    width: 80vw;
+    /* Más ancho en móviles muy pequeños */
+  }
+}
