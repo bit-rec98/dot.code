@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ServiceModel } from '../../core/models';
 import { CommonModule, NgFor } from '@angular/common';
@@ -29,7 +29,15 @@ import { ContactComponent } from '../../components/contact/contact.component';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
+  // carrusel de servicios móvil
+  currentServiceIndex = 0;
+  // Control del carrusel de proyectos - versión móvil
+  currentMobileProjectIndex = 0;
+
+  // Control del carrusel de proyectos - versión desktop
+  currentDesktopProjectIndex = 0;
+  projectsPerGroup = 3;
   services: ServiceModel[] = [
     {
       title: 'Desarrollo',
@@ -344,7 +352,7 @@ export class HomeComponent implements OnInit, OnDestroy {
    * Constructor de la clase HomeComponent
    * @param fb
    */
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef) {
     this.contactForm = this.fb.group({
       nombre: ['', [Validators.required]],
       apellido: ['', [Validators.required]],
@@ -399,6 +407,126 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     // Detener carrusel de proyectos
     this.stopProjectsCarousel();
+  }
+
+  /**
+   * Método que se ejecuta después de que la vista del componente ha sido inicializada
+   * - Agrega eventos de scroll a los carruseles de servicios y proyectos
+   */
+  ngAfterViewInit() {
+    const servicesCarousel = document.getElementById('servicesMobileCarousel');
+    const projectsCarouselMobile = document.getElementById(
+      'projectsCarouselMobile'
+    );
+
+    if (servicesCarousel) {
+      servicesCarousel.addEventListener('scroll', () => {
+        const index = Math.round(
+          servicesCarousel.scrollLeft / servicesCarousel.clientWidth
+        );
+        if (index !== this.currentServiceIndex) {
+          this.currentServiceIndex = index;
+          if (this.cdRef) this.cdRef.detectChanges();
+        }
+      });
+    }
+
+    if (projectsCarouselMobile) {
+      projectsCarouselMobile.addEventListener('scroll', () => {
+        const index = Math.round(
+          projectsCarouselMobile.scrollLeft / projectsCarouselMobile.clientWidth
+        );
+        if (index !== this.currentMobileProjectIndex) {
+          this.currentMobileProjectIndex = index;
+          if (this.cdRef) this.cdRef.detectChanges();
+        }
+      });
+    }
+  }
+
+  /**
+   * ========================================
+   * Sección de métodos para el carrusel de servicios
+   * ========================================
+   */
+  /**
+   * Método para avanzar o retroceder en un carrusel basado en scroll
+   * @param carouselId ID del elemento carrusel
+   * @param direction 1 para avanzar, -1 para retroceder
+   */
+  scrollCarousel(carouselId: string, direction: number): void {
+    const carousel = document.getElementById(carouselId);
+    if (!carousel) return;
+
+    const cardWidth = carousel.clientWidth;
+    carousel.scrollBy({ left: cardWidth * direction, behavior: 'smooth' });
+
+    // Actualizar índices para los indicadores
+    if (carouselId === 'servicesMobileCarousel') {
+      setTimeout(() => {
+        this.currentServiceIndex = Math.round(carousel.scrollLeft / cardWidth);
+      }, 500);
+    } else if (carouselId === 'projectsCarousel') {
+      setTimeout(() => {
+        this.currentProjectIndex = Math.round(carousel.scrollLeft / cardWidth);
+      }, 500);
+    }
+  }
+
+  /**
+   * Método para ir a una tarjeta específica del carrusel
+   * @param carouselId ID del elemento carrusel
+   * @param index Índice de la tarjeta a mostrar
+   */
+  scrollToCard(carouselId: string, index: number): void {
+    const carousel = document.getElementById(carouselId);
+    if (!carousel) return;
+
+    const cardWidth = carousel.clientWidth;
+    carousel.scrollTo({ left: cardWidth * index, behavior: 'smooth' });
+
+    if (carouselId === 'servicesMobileCarousel') {
+      this.currentServiceIndex = index;
+    } else if (carouselId === 'projectsCarousel') {
+      this.currentProjectIndex = index;
+    }
+  }
+
+  /**
+   * Obtiene los índices iniciales de cada grupo de proyectos
+   * @returns Array con los índices de inicio de cada grupo
+   */
+  getProjectGroups(): number[] {
+    const totalGroups = Math.ceil(this.projects.length / this.projectsPerGroup);
+    return Array.from(
+      { length: totalGroups },
+      (_, i) => i * this.projectsPerGroup
+    );
+  }
+
+  /**
+   * Avanza al siguiente grupo de proyectos en vista desktop
+   */
+  nextProjectGroup(): void {
+    const totalGroups = Math.ceil(this.projects.length / this.projectsPerGroup);
+    this.currentDesktopProjectIndex =
+      (this.currentDesktopProjectIndex + 1) % totalGroups;
+  }
+
+  /**
+   * Retrocede al grupo anterior de proyectos en vista desktop
+   */
+  prevProjectGroup(): void {
+    const totalGroups = Math.ceil(this.projects.length / this.projectsPerGroup);
+    this.currentDesktopProjectIndex =
+      (this.currentDesktopProjectIndex - 1 + totalGroups) % totalGroups;
+  }
+
+  /**
+   * Establece un grupo específico de proyectos en vista desktop
+   */
+  setProjectGroup(index: number): void {
+    this.currentDesktopProjectIndex = index;
   }
 
   /**
