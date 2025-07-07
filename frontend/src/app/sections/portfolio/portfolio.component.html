@@ -1,0 +1,245 @@
+<section class="sm:w-1/2 lg:w-5/6 mx-auto py-8">
+  <article class="px-4 sm:px-8 lg:px-16" id="portfolioSection">
+    <h1 class="text-2xl sm:text-3xl">Nuestro Trabajo</h1>
+    <p class="text-base sm:text-lg mb-8">
+      Explora nuestro portafolio de proyectos exitosos donde entregamos
+      soluciones web innovadoras y confiables para nuestros clientes.
+    </p>
+
+    <!-- Vista móvil: Scroll horizontal sin botones -->
+    <div class="block sm:hidden">
+      <div
+        class="flex gap-4 overflow-x-auto pb-4 px-4 scrollbar-hide snap-x snap-mandatory"
+        style="scroll-behavior: smooth"
+        id="projectsCarouselMobile"
+      >
+        <div
+          *ngFor="let project of projects"
+          class="flex-shrink-0 w-80 snap-center"
+        >
+          <div
+            class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg overflow-hidden shadow-lg h-full flex flex-col"
+          >
+            <!-- Imagen del proyecto -->
+            <div
+              class="relative h-48 bg-gradient-to-br from-sky-900 to-sky-700 flex items-center justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-16 w-16 text-white/70"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"
+              ></div>
+            </div>
+
+            <!-- Contenido de la tarjeta -->
+            <div class="p-5 flex-1 flex flex-col">
+              <h3 class="text-xl font-bold text-white mb-2">
+                {{ project.title }}
+              </h3>
+              <p class="text-gray-100 text-sm mb-4 flex-grow leading-relaxed">
+                {{ project.description }}
+              </p>
+
+              <!-- Tecnologías usadas -->
+              <div class="mb-4 flex flex-wrap gap-2">
+                <span
+                  *ngFor="let tech of project.technologies"
+                  class="text-xs bg-white/10 text-white px-2 py-1 rounded-full"
+                  >{{ tech }}</span
+                >
+              </div>
+
+              <!-- Botón para visitar el proyecto -->
+              <button
+                (click)="openProjectUrl(project.url)"
+                class="w-full bg-sky-600 hover:bg-sky-700 text-white py-3 px-4 rounded-md transition-colors duration-300 flex items-center justify-center font-medium"
+              >
+                Visitar proyecto
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 ml-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vista desktop: Carrusel con controles -->
+    <div class="hidden sm:block relative">
+      <!-- Contenedor del carrusel -->
+      <div class="overflow-hidden mx-12">
+        <div
+          class="flex transition-transform duration-500 ease-in-out"
+          [style.transform]="
+            'translateX(-' + currentDesktopProjectIndex * 100 + '%)'
+          "
+        >
+          <!-- Grupos de 3 proyectos -->
+          <ng-container
+            *ngFor="let i of getProjectGroups(); let groupIndex = index"
+          >
+            <div
+              class="min-w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            >
+              <!-- Proyectos en el grupo actual -->
+              <div
+                *ngFor="let j of [0, 1, 2]"
+                class="flex-1"
+                [class.hidden]="!projects[i + j]"
+              >
+                <div
+                  *ngIf="projects[i + j]"
+                  class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-105 hover:from-gray-700 hover:to-gray-800 h-full flex flex-col"
+                >
+                  <!-- Imagen del proyecto -->
+                  <div
+                    class="relative h-48 bg-gradient-to-br from-sky-900 to-sky-700 flex items-center justify-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-16 w-16 text-white/70"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    <div
+                      class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"
+                    ></div>
+                  </div>
+
+                  <!-- Contenido de la tarjeta -->
+                  <div class="p-6 flex-1 flex flex-col">
+                    <h3 class="text-xl font-bold text-white mb-3">
+                      {{ projects[i + j].title }}
+                    </h3>
+                    <p
+                      class="text-gray-100 text-sm mb-4 flex-grow leading-relaxed"
+                    >
+                      {{ projects[i + j].description }}
+                    </p>
+
+                    <!-- Tecnologías usadas -->
+                    <div class="mb-4 flex flex-wrap gap-2">
+                      <span
+                        *ngFor="let tech of projects[i + j].technologies"
+                        class="text-xs bg-white/10 text-white px-2 py-1 rounded-full"
+                        >{{ tech }}</span
+                      >
+                    </div>
+
+                    <!-- Botón para visitar el proyecto -->
+                    <button
+                      (click)="openProjectUrl(projects[i + j].url)"
+                      class="w-full bg-sky-600 hover:bg-sky-700 text-white py-3 px-4 rounded-md transition-all duration-300 flex items-center justify-center font-medium shadow-lg hover:shadow-xl"
+                    >
+                      Visitar proyecto
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4 ml-2 transition-transform duration-300 group-hover:translate-x-1"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Controles de navegación desktop - posicionados fuera del contenido -->
+      <div class="absolute top-1/2 left-2 transform -translate-y-1/2 z-10">
+        <button
+          (click)="prevProjectGroup()"
+          class="bg-sky-600/80 hover:bg-sky-600 text-white rounded-full p-3 focus:outline-none transition-all shadow-lg backdrop-blur-sm"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div class="absolute top-1/2 right-2 transform -translate-y-1/2 z-10">
+        <button
+          (click)="nextProjectGroup()"
+          class="bg-sky-600/80 hover:bg-sky-600 text-white rounded-full p-3 focus:outline-none transition-all shadow-lg backdrop-blur-sm"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Indicadores de página desktop -->
+      <div class="flex justify-center mt-6">
+        <div
+          *ngFor="let group of getProjectGroups(); let i = index"
+          class="mx-1 w-3 h-3 rounded-full cursor-pointer transition-all duration-300"
+          [ngClass]="{
+            'bg-sky-600 scale-125': i === currentDesktopProjectIndex,
+            'bg-gray-400 hover:bg-gray-300': i !== currentDesktopProjectIndex
+          }"
+          (click)="setProjectGroup(i)"
+        ></div>
+      </div>
+    </div>
+  </article>
+</section>

@@ -1,0 +1,97 @@
+<section class="sm:w-1/2 lg:w-5/6 mx-auto py-8">
+  <article class="px-4 sm:px-8 lg:px-16" id="servicesSection">
+    <h1 class="text-2xl sm:text-3xl">Nuestros Servicios</h1>
+    <p class="text-base sm:text-lg">
+      Ofrecemos una amplia gama de servicios que incluyen desarrollo de
+      aplicaciones web, mantenimiento, optimización de rendimiento y soporte
+      técnico. Nuestro equipo asegura que tus aplicaciones estén siempre
+      actualizadas y funcionando sin problemas.
+    </p>
+
+    <!-- Vista móvil: Carrusel de servicios -->
+    <div class="block sm:hidden relative my-8">
+      <div class="overflow-hidden">
+        <div
+          class="flex snap-x snap-mandatory w-full overflow-x-scroll scrollbar-hide"
+          style="scroll-behavior: smooth"
+          id="servicesMobileCarousel"
+        >
+          <div
+            *ngFor="let service of services; let i = index"
+            class="w-full flex-shrink-0 snap-center px-2"
+          >
+            <app-service-card [serviceData]="service"></app-service-card>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles -->
+      <div class="absolute top-1/2 left-0 transform -translate-y-1/2 z-10">
+        <button
+          (click)="scrollCarousel(-1)"
+          class="bg-sky-600/70 hover:bg-sky-600 text-white rounded-full p-2 focus:outline-none transition-all shadow-lg"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div class="absolute top-1/2 right-0 transform -translate-y-1/2 z-10">
+        <button
+          (click)="scrollCarousel(1)"
+          class="bg-sky-600/70 hover:bg-sky-600 text-white rounded-full p-2 focus:outline-none transition-all shadow-lg"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Indicadores -->
+      <div class="flex justify-center mt-4">
+        <div
+          *ngFor="let service of services; let i = index"
+          class="mx-1 w-2 h-2 rounded-full cursor-pointer transition-all"
+          [ngClass]="{
+            'bg-sky-500': i === currentServiceIndex,
+            'bg-gray-500': i !== currentServiceIndex
+          }"
+          (click)="scrollToCard(i)"
+        ></div>
+      </div>
+    </div>
+
+    <!-- Vista tablet/desktop: Grid de servicios -->
+    <div
+      class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 my-8"
+    >
+      <app-service-card
+        *ngFor="let service of services"
+        [serviceData]="service"
+      ></app-service-card>
+    </div>
+  </article>
+</section>

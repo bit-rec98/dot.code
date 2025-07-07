@@ -1,14 +1,82 @@
-<div class="bg-white shadow-md rounded-lg p-6 max-w-sm">
-  <div class="flex items-center mb-4">
-    <div class="w-12 h-12 bg-blue-500 text-white flex items-center justify-center rounded-full">
-      <i class="fas fa-cog"></i>
+<div
+  class="relative overflow-hidden rounded-lg shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-2xl h-full flex flex-col"
+  [ngClass]="
+    serviceData.bgClass || 'bg-gradient-to-br from-gray-800 to-gray-900'
+  "
+>
+  <!-- Contenido de la tarjeta -->
+  <div class="p-6 h-full flex flex-col">
+    <!-- Icono y título -->
+    <div class="flex items-center mb-4">
+      <div
+        class="w-12 h-12 bg-white/20 text-white flex items-center justify-center rounded-full shadow-lg backdrop-blur-sm"
+      >
+        <!-- Icono dinámico basado en el tipo de servicio -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <!-- Icono por defecto - código -->
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+          />
+        </svg>
+      </div>
+      <h3 class="ml-4 text-xl font-bold text-white leading-tight">
+        {{ serviceData.title }}
+      </h3>
     </div>
-    <h3 class="ml-4 text-lg font-semibold text-gray-800">{{serviceData.title}}</h3>
+
+    <!-- Descripción -->
+    <p class="text-gray-100 text-sm leading-relaxed flex-grow mb-4">
+      {{ serviceData.description }}
+    </p>
+
+    <!-- Características destacadas -->
+    <div class="mb-4" *ngIf="serviceData.features">
+      <div class="flex flex-wrap gap-2">
+        <span
+          *ngFor="let feature of serviceData.features"
+          class="text-xs bg-white/10 text-white px-2 py-1 rounded-full"
+        >
+          {{ feature }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Botón de acción -->
+    <div class="mt-auto">
+      <button
+        class="w-full bg-white/20 hover:bg-white/30 text-white py-3 px-4 rounded-md transition-all duration-300 flex items-center justify-center font-medium shadow-lg hover:shadow-xl backdrop-blur-sm border border-white/20"
+        (click)="onLearnMore()"
+      >
+        Más información
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4 ml-2 transition-transform duration-300"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M13 7l5 5m0 0l-5 5m5-5H6"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Efecto de overlay sutil -->
+    <div
+      class="absolute inset-0 bg-gradient-to-t from-transparent to-white/5 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none rounded-lg"
+    ></div>
   </div>
-  <p class="text-gray-600 text-sm">
-    {{ serviceData.description }}
-  </p>
-  <button class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">
-    Ver más
-  </button>
 </div>

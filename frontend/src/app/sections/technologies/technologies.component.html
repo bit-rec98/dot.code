@@ -1,0 +1,37 @@
+<section class="sm:w-1/2 lg:w-5/6 mx-auto py-8">
+  <article class="px-4 sm:px-8 lg:px-16" id="technologiesSection">
+    <h1 class="text-2xl sm:text-3xl mb-6">Tecnologías</h1>
+    <p class="text-base sm:text-lg mb-8">
+      Trabajamos con las tecnologías más modernas y probadas del mercado para
+      garantizar aplicaciones robustas, escalables y de alto rendimiento.
+    </p>
+
+    <!-- Grid de tecnologías -->
+    <div
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6"
+    >
+      <div
+        *ngFor="let tech of technologies; let i = index"
+        class="technology-card bg-gray-800/50 p-4 rounded-lg text-center transition-all duration-300 hover:bg-gray-700/50 hover:transform hover:scale-105"
+        [style.animation-delay]="i * 0.1 + 's'"
+      >
+        <div class="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
+          <img
+            [src]="tech.logo"
+            [alt]="tech.name + ' logo'"
+            class="w-full h-full object-contain filter brightness-0 invert"
+            loading="lazy"
+          />
+        </div>
+        <h3 class="text-sm font-medium text-gray-200">{{ tech.name }}</h3>
+      </div>
+    </div>
+
+    <!-- Mensaje adicional -->
+    <div class="mt-8 text-center">
+      <p class="text-gray-400 text-sm">
+        Y muchas más tecnologías según las necesidades de tu proyecto
+      </p>
+    </div>
+  </article>
+</section>
