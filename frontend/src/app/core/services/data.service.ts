@@ -1,72 +1,123 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { ProjectModel } from '../models/project';
 import { TechnologyModel } from '../models/technology';
 import { IdeaModel } from '../models/idea';
 import { FAQModel } from '../models/faq';
 import { ServiceModel } from '../models';
 
+interface UIData {
+  services: ServiceModel[];
+  projects: ProjectModel[];
+  technologies: TechnologyModel[];
+  ideas: IdeaModel[];
+  faqs: FAQModel[];
+}
+
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
-  getServices(): ServiceModel[] {
-    return [
-      {
-        title: 'Desarrollo Web',
-        description:
-          'Creamos aplicaciones web modernas y escalables utilizando las últimas tecnologías. Desde sitios corporativos hasta plataformas complejas.',
-        icon: 'assets/icons/service1.svg',
-        bgClass: 'bg-gradient-to-br from-blue-900 to-blue-700',
-        features: ['React/Angular', 'Responsive', 'SEO Optimizado'],
-      },
-      // ... resto de servicios
-    ];
+  private dataUrl = 'data/ui.json';
+  private dataCache$ = new BehaviorSubject<UIData | null>(null);
+
+  constructor(private http: HttpClient) {
+    this.loadData();
   }
 
-  getProjects(): ProjectModel[] {
-    return [
-      {
-        title: 'Portal Educativo Interactivo',
-        description:
-          'Plataforma de aprendizaje en línea con cursos interactivos, evaluaciones en tiempo real y seguimiento de progreso personalizado.',
-        url: 'https://ejemplo-educativo.dot.code',
-        technologies: ['Angular', 'Node.js', 'MongoDB'],
+  private loadData(): void {
+    this.http.get<UIData>(this.dataUrl).subscribe({
+      next: (data) => {
+        this.dataCache$.next(data);
       },
-      // ... resto de proyectos
-    ];
+      error: (error) => {
+        console.error('Error loading UI data:', error);
+        // Datos de fallback en caso de error
+        this.dataCache$.next(this.getFallbackData());
+      },
+    });
   }
 
-  getTechnologies(): TechnologyModel[] {
-    return [
-      { name: 'Angular', logo: 'assets/logos/angular.svg' },
-      { name: 'React', logo: 'assets/logos/react.svg' },
-      // ... resto de tecnologías
-    ];
+  private getFallbackData(): UIData {
+    return {
+      services: [],
+      projects: [],
+      technologies: [],
+      ideas: [],
+      faqs: [],
+    };
   }
 
-  getIdeas(): IdeaModel[] {
-    return [
-      {
-        title: 'Sistema de IoT para Agricultura',
-        description:
-          'Monitoreo inteligente de cultivos con sensores de humedad, temperatura y nutrientes para optimizar recursos y mejorar rendimientos.',
-        tools: ['Arduino', 'React', 'Node.js', 'MongoDB'],
-        bgClass: 'bg-gradient-to-br from-green-900 to-green-700',
-      },
-      // ... resto de ideas
-    ];
+  getServices(): Observable<ServiceModel[]> {
+    return this.dataCache$.pipe(
+      map((data) => data?.services || []),
+      shareReplay(1)
+    );
   }
 
-  getFAQs(): FAQModel[] {
-    return [
-      {
-        question: '¿Cuánto tiempo toma desarrollar una aplicación web?',
-        answer:
-          'El tiempo varía según la complejidad, pero típicamente entre 4-12 semanas. Trabajamos con metodologías ágiles para entregarte resultados rápidos y de calidad.',
-        category: 'Tiempos',
-        bgClass: 'bg-gradient-to-br from-blue-900 to-blue-700',
-      },
-      // ... resto de FAQs
-    ];
+  getProjects(): Observable<ProjectModel[]> {
+    return this.dataCache$.pipe(
+      map((data) => data?.projects || []),
+      shareReplay(1)
+    );
+  }
+
+  getTechnologies(): Observable<TechnologyModel[]> {
+    return this.dataCache$.pipe(
+      map((data) => data?.technologies || []),
+      shareReplay(1)
+    );
+  }
+
+  getIdeas(): Observable<IdeaModel[]> {
+    return this.dataCache$.pipe(
+      map((data) => data?.ideas || []),
+      shareReplay(1)
+    );
+  }
+
+  getFAQs(): Observable<FAQModel[]> {
+    return this.dataCache$.pipe(
+      map((data) => data?.faqs || []),
+      shareReplay(1)
+    );
+  }
+
+  // Métodos síncronos para mantener compatibilidad (deprecados)
+  getServicesSync(): ServiceModel[] {
+    return this.dataCache$.value?.services || [];
+  }
+
+  getProjectsSync(): ProjectModel[] {
+    return this.dataCache$.value?.projects || [];
+  }
+
+  getTechnologiesSync(): TechnologyModel[] {
+    return this.dataCache$.value?.technologies || [];
+  }
+
+  getIdeasSync(): IdeaModel[] {
+    return this.dataCache$.value?.ideas || [];
+  }
+
+  getFAQsSync(): FAQModel[] {
+    return this.dataCache$.value?.faqs || [];
+  }
+
+  // Método para recargar datos manualmente
+  reloadData(): void {
+    this.loadData();
+  }
+
+  // Método para verificar si los datos están cargados
+  isDataLoaded(): boolean {
+    return this.dataCache$.value !== null;
+  }
+
+  // Observable para saber cuando los datos están listos
+  get dataReady$(): Observable<boolean> {
+    return this.dataCache$.pipe(map((data) => data !== null));
   }
 }

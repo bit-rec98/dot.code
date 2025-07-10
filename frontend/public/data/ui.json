@@ -1,0 +1,277 @@
+{
+  "services": [
+    {
+      "title": "Desarrollo Web",
+      "description": "Creamos aplicaciones web modernas y escalables utilizando las últimas tecnologías. Desde sitios corporativos hasta plataformas complejas.",
+      "icon": "assets/icons/service1.svg",
+      "bgClass": "bg-gradient-to-br from-blue-900 to-blue-700",
+      "features": ["React/Angular", "Responsive", "SEO Optimizado"]
+    },
+    {
+      "title": "Desarrollo Mobile",
+      "description": "Aplicaciones móviles nativas e híbridas para iOS y Android con experiencia de usuario excepcional.",
+      "icon": "assets/icons/service2.svg",
+      "bgClass": "bg-gradient-to-br from-purple-900 to-purple-700",
+      "features": ["React Native", "Flutter", "Push Notifications"]
+    },
+    {
+      "title": "Backend & APIs",
+      "description": "Desarrollo de APIs robustas y escalables con arquitecturas microservicios y bases de datos optimizadas.",
+      "icon": "assets/icons/service3.svg",
+      "bgClass": "bg-gradient-to-br from-green-900 to-green-700",
+      "features": ["Node.js", "Python", "RESTful APIs"]
+    },
+    {
+      "title": "DevOps & Cloud",
+      "description": "Implementación de CI/CD, contenedores Docker y despliegue en la nube para máxima disponibilidad.",
+      "icon": "assets/icons/service4.svg",
+      "bgClass": "bg-gradient-to-br from-orange-900 to-orange-700",
+      "features": ["AWS", "Docker", "Kubernetes"]
+    },
+    {
+      "title": "E-commerce",
+      "description": "Tiendas online completas con pasarelas de pago, gestión de inventario y panel administrativo.",
+      "icon": "assets/icons/service5.svg",
+      "bgClass": "bg-gradient-to-br from-red-900 to-red-700",
+      "features": ["Shopify", "WooCommerce", "Custom Solutions"]
+    },
+    {
+      "title": "UX/UI Design",
+      "description": "Diseño de interfaces intuitivas y experiencias de usuario que convierten visitantes en clientes.",
+      "icon": "assets/icons/service6.svg",
+      "bgClass": "bg-gradient-to-br from-pink-900 to-pink-700",
+      "features": ["Figma", "Prototyping", "User Research"]
+    },
+    {
+      "title": "Consultoría Tecnológica",
+      "description": "Asesoramiento experto en transformación digital y selección de tecnologías para tu negocio.",
+      "icon": "assets/icons/service7.svg",
+      "bgClass": "bg-gradient-to-br from-indigo-900 to-indigo-700",
+      "features": ["Digital Strategy", "Tech Audit", "Roadmap"]
+    },
+    {
+      "title": "Mantenimiento & Soporte",
+      "description": "Soporte técnico 24/7, actualizaciones de seguridad y optimización continua de aplicaciones.",
+      "icon": "assets/icons/service8.svg",
+      "bgClass": "bg-gradient-to-br from-teal-900 to-teal-700",
+      "features": ["24/7 Support", "Security Updates", "Performance"]
+    },
+    {
+      "title": "Inteligencia Artificial",
+      "description": "Integración de IA y Machine Learning para automatización inteligente y análisis predictivo.",
+      "icon": "assets/icons/service9.svg",
+      "bgClass": "bg-gradient-to-br from-cyan-900 to-cyan-700",
+      "features": ["TensorFlow", "OpenAI", "Computer Vision"]
+    },
+    {
+      "title": "Blockchain & Web3",
+      "description": "Desarrollo de aplicaciones descentralizadas, smart contracts y soluciones blockchain.",
+      "icon": "assets/icons/service10.svg",
+      "bgClass": "bg-gradient-to-br from-yellow-900 to-yellow-700",
+      "features": ["Ethereum", "Smart Contracts", "DApps"]
+    }
+  ],
+  "projects": [
+    {
+      "title": "Portal Educativo Interactivo",
+      "description": "Plataforma de aprendizaje en línea con cursos interactivos, evaluaciones en tiempo real y seguimiento de progreso personalizado.",
+      "url": "https://ejemplo-educativo.dot.code",
+      "technologies": ["Angular", "Node.js", "MongoDB"]
+    },
+    {
+      "title": "App de Delivery Gastronómico",
+      "description": "Aplicación móvil para pedidos de comida con geolocalización, pagos integrados y seguimiento en tiempo real.",
+      "url": "https://foodapp.dot.code",
+      "technologies": ["React Native", "Express", "PostgreSQL"]
+    },
+    {
+      "title": "Sistema de Gestión Hospitalaria",
+      "description": "Plataforma integral para hospitales con gestión de pacientes, citas médicas y expedientes digitales.",
+      "url": "https://hospital-system.dot.code",
+      "technologies": ["Vue.js", "Python", "MySQL"]
+    },
+    {
+      "title": "E-commerce Multivendedor",
+      "description": "Marketplace completo con múltiples vendedores, sistema de reviews y panel de analytics avanzado.",
+      "url": "https://marketplace.dot.code",
+      "technologies": ["React", "Node.js", "Redis"]
+    },
+    {
+      "title": "App de Fitness Personal",
+      "description": "Aplicación de entrenamiento personalizado con IA, seguimiento de rutinas y comunidad de usuarios.",
+      "url": "https://fitapp.dot.code",
+      "technologies": ["Flutter", "Firebase", "TensorFlow"]
+    },
+    {
+      "title": "Dashboard de Business Intelligence",
+      "description": "Panel de control empresarial con visualización de datos, reportes automáticos y análisis predictivo.",
+      "url": "https://bi-dashboard.dot.code",
+      "technologies": ["Angular", "Python", "ElasticSearch"]
+    },
+    {
+      "title": "Plataforma de Streaming",
+      "description": "Servicio de video streaming con CDN global, recomendaciones personalizadas y chat en vivo.",
+      "url": "https://streaming.dot.code",
+      "technologies": ["React", "AWS", "WebRTC"]
+    },
+    {
+      "title": "Sistema de Gestión Inmobiliaria",
+      "description": "CRM inmobiliario con tour virtual, calculadora de hipotecas y matching automático cliente-propiedad.",
+      "url": "https://realestate.dot.code",
+      "technologies": ["Next.js", "GraphQL", "MongoDB"]
+    },
+    {
+      "title": "App de Criptomonedas",
+      "description": "Aplicación de trading con gráficos en tiempo real, alertas de precio y portfolio tracking.",
+      "url": "https://cryptoapp.dot.code",
+      "technologies": ["React Native", "WebSocket", "Docker"]
+    },
+    {
+      "title": "Portal de Recursos Humanos",
+      "description": "Plataforma integral de RRHH con reclutamiento automatizado, evaluaciones y gestión de nómina.",
+      "url": "https://hr-portal.dot.code",
+      "technologies": ["Vue.js", "Laravel", "PostgreSQL"]
+    }
+  ],
+  "technologies": [
+    { "name": "Angular", "logo": "assets/logos/angular.svg" },
+    { "name": "React", "logo": "assets/logos/react.svg" },
+    { "name": "Vue.js", "logo": "assets/logos/vue.svg" },
+    { "name": "Node.js", "logo": "assets/logos/nodejs.svg" },
+    { "name": "Python", "logo": "assets/logos/python.svg" },
+    { "name": "TypeScript", "logo": "assets/logos/typescript.svg" },
+    { "name": "MongoDB", "logo": "assets/logos/mongodb.svg" },
+    { "name": "PostgreSQL", "logo": "assets/logos/postgresql.svg" },
+    { "name": "AWS", "logo": "assets/logos/aws.svg" },
+    { "name": "Docker", "logo": "assets/logos/docker.svg" },
+    { "name": "Kubernetes", "logo": "assets/logos/kubernetes.svg" },
+    { "name": "React Native", "logo": "assets/logos/react-native.svg" },
+    { "name": "Flutter", "logo": "assets/logos/flutter.svg" },
+    { "name": "Firebase", "logo": "assets/logos/firebase.svg" },
+    { "name": "GraphQL", "logo": "assets/logos/graphql.svg" }
+  ],
+  "ideas": [
+    {
+      "title": "Sistema de IoT para Agricultura",
+      "description": "Monitoreo inteligente de cultivos con sensores de humedad, temperatura y nutrientes para optimizar recursos y mejorar rendimientos.",
+      "tools": ["Arduino", "React", "Node.js", "MongoDB"],
+      "bgClass": "bg-gradient-to-br from-green-900 to-green-700"
+    },
+    {
+      "title": "Asistente Virtual con IA",
+      "description": "Chatbot inteligente para customer service con procesamiento de lenguaje natural y aprendizaje automático.",
+      "tools": ["Python", "TensorFlow", "NLP", "FastAPI"],
+      "bgClass": "bg-gradient-to-br from-purple-900 to-purple-700"
+    },
+    {
+      "title": "Red Social para Desarrolladores",
+      "description": "Plataforma social especializada para programadores con code sharing, collaborative coding y mentorship.",
+      "tools": ["React", "GraphQL", "PostgreSQL", "Redis"],
+      "bgClass": "bg-gradient-to-br from-blue-900 to-blue-700"
+    },
+    {
+      "title": "App de Realidad Aumentada",
+      "description": "Aplicación móvil de AR para visualización de muebles en espacios reales antes de comprar.",
+      "tools": ["Unity", "ARCore", "C#", "Firebase"],
+      "bgClass": "bg-gradient-to-br from-orange-900 to-orange-700"
+    },
+    {
+      "title": "Blockchain para Trazabilidad",
+      "description": "Sistema blockchain para rastrear la cadena de suministro de alimentos desde el origen hasta el consumidor.",
+      "tools": ["Ethereum", "Solidity", "Web3.js", "IPFS"],
+      "bgClass": "bg-gradient-to-br from-yellow-900 to-yellow-700"
+    },
+    {
+      "title": "Plataforma de Telemedicina",
+      "description": "Sistema de consultas médicas virtuales con videollamadas, prescripciones digitales y seguimiento.",
+      "tools": ["Vue.js", "WebRTC", "Python", "MySQL"],
+      "bgClass": "bg-gradient-to-br from-red-900 to-red-700"
+    },
+    {
+      "title": "Smart City Dashboard",
+      "description": "Panel de control inteligente para ciudades con monitoreo de tráfico, calidad del aire y servicios públicos.",
+      "tools": ["Angular", "D3.js", "InfluxDB", "Grafana"],
+      "bgClass": "bg-gradient-to-br from-indigo-900 to-indigo-700"
+    },
+    {
+      "title": "Sistema de Energía Renovable",
+      "description": "Plataforma para gestión y optimización de paneles solares con predicción de generación energética.",
+      "tools": ["React", "Machine Learning", "TimescaleDB", "Python"],
+      "bgClass": "bg-gradient-to-br from-teal-900 to-teal-700"
+    },
+    {
+      "title": "Marketplace de NFTs",
+      "description": "Plataforma descentralizada para compra/venta de NFTs con creación de arte generativo y subastas.",
+      "tools": ["React", "Ethereum", "IPFS", "MetaMask"],
+      "bgClass": "bg-gradient-to-br from-pink-900 to-pink-700"
+    },
+    {
+      "title": "App de Gestión de Inventario",
+      "description": "Sistema inteligente de inventario con códigos QR, predicción de demanda y reorden automático.",
+      "tools": ["Flutter", "Node.js", "PostgreSQL", "Redis"],
+      "bgClass": "bg-gradient-to-br from-cyan-900 to-cyan-700"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "¿Cuánto tiempo toma desarrollar una aplicación web?",
+      "answer": "El tiempo varía según la complejidad, pero típicamente entre 4-12 semanas. Trabajamos con metodologías ágiles para entregarte resultados rápidos y de calidad.",
+      "category": "Tiempos",
+      "bgClass": "bg-gradient-to-br from-blue-900 to-blue-700"
+    },
+    {
+      "question": "¿Ofrecen soporte técnico después del lanzamiento?",
+      "answer": "Sí, ofrecemos soporte técnico 24/7 durante los primeros 6 meses gratuito, y planes de mantenimiento extendido disponibles.",
+      "category": "Soporte",
+      "bgClass": "bg-gradient-to-br from-green-900 to-green-700"
+    },
+    {
+      "question": "¿Cuál es el costo promedio de una aplicación móvil?",
+      "answer": "Los precios varían entre $5,000 y $50,000 dependiendo de la complejidad, funcionalidades y plataformas. Ofrecemos cotizaciones personalizadas.",
+      "category": "Precios",
+      "bgClass": "bg-gradient-to-br from-purple-900 to-purple-700"
+    },
+    {
+      "question": "¿Trabajan con tecnologías específicas que necesito?",
+      "answer": "Trabajamos con un amplio stack tecnológico. Si tienes tecnologías específicas en mente, nuestro equipo puede adaptarse a tus necesidades.",
+      "category": "Tecnología",
+      "bgClass": "bg-gradient-to-br from-orange-900 to-orange-700"
+    },
+    {
+      "question": "¿Pueden migrar mi aplicación existente a nuevas tecnologías?",
+      "answer": "Absolutamente. Realizamos migraciones completas con análisis de código, planificación detallada y migración gradual para minimizar riesgos.",
+      "category": "Migración",
+      "bgClass": "bg-gradient-to-br from-red-900 to-red-700"
+    },
+    {
+      "question": "¿Cómo garantizan la seguridad de las aplicaciones?",
+      "answer": "Implementamos las mejores prácticas de seguridad: encriptación, autenticación multi-factor, auditorías de código y pruebas de penetración.",
+      "category": "Seguridad",
+      "bgClass": "bg-gradient-to-br from-indigo-900 to-indigo-700"
+    },
+    {
+      "question": "¿Ofrecen capacitación para usar las aplicaciones desarrolladas?",
+      "answer": "Sí, incluimos capacitación completa para usuarios finales y administradores, junto con documentación detallada y videos tutoriales.",
+      "category": "Capacitación",
+      "bgClass": "bg-gradient-to-br from-teal-900 to-teal-700"
+    },
+    {
+      "question": "¿Pueden integrar APIs de terceros en mi aplicación?",
+      "answer": "Por supuesto. Tenemos experiencia integrando APIs de pago, redes sociales, mapas, analytics y cualquier servicio de terceros que necesites.",
+      "category": "Integraciones",
+      "bgClass": "bg-gradient-to-br from-pink-900 to-pink-700"
+    },
+    {
+      "question": "¿Qué metodología de desarrollo utilizan?",
+      "answer": "Utilizamos metodologías ágiles (Scrum/Kanban) con entregas semanales, comunicación constante y iteraciones basadas en feedback.",
+      "category": "Metodología",
+      "bgClass": "bg-gradient-to-br from-yellow-900 to-yellow-700"
+    },
+    {
+      "question": "¿Proporcionan el código fuente al finalizar el proyecto?",
+      "answer": "Sí, al completar el proyecto y los pagos, entregamos todo el código fuente, documentación y derechos de propiedad intelectual.",
+      "category": "Entrega",
+      "bgClass": "bg-gradient-to-br from-cyan-900 to-cyan-700"
+    }
+  ]
+}

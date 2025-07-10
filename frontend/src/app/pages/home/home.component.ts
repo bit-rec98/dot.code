@@ -44,9 +44,15 @@ export class HomeComponent implements OnInit {
   }
 
   private loadData(): void {
-    this.services = this.dataService.getServices();
-    this.projects = this.dataService.getProjects();
-    this.faqs = this.dataService.getFAQs();
+    this.dataService.getServices().subscribe(services => {
+      this.services = services;
+    });
+    this.dataService.getProjects().subscribe(projects => {
+      this.projects = projects;
+    });
+    this.dataService.getFAQs().subscribe(faqs => {
+      this.faqs = faqs;
+    });
   }
 
   scrollToSection(sectionId: string): void {

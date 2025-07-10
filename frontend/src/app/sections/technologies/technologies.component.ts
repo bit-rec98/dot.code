@@ -16,6 +16,8 @@ export class TechnologiesComponent implements OnInit {
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.technologies = this.dataService.getTechnologies();
+    this.dataService.getTechnologies().subscribe(technologies => {
+      this.technologies = technologies;
+    });
   }
 }

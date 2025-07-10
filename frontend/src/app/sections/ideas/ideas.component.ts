@@ -20,9 +20,11 @@ export class IdeasComponent implements OnInit, OnDestroy {
   constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
-    this.allIdeas = this.dataService.getIdeas();
-    this.initializeIdeas();
-    this.startIdeasCycle();
+    this.dataService.getIdeas().subscribe(ideas => {
+      this.allIdeas = ideas;
+      this.initializeIdeas();
+      this.startIdeasCycle();
+    });
   }
 
   ngOnDestroy(): void {
