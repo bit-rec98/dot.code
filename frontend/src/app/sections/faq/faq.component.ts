@@ -5,6 +5,8 @@ import {
   OnDestroy,
   Output,
   EventEmitter,
+  SimpleChanges,
+  OnChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FAQModel } from '../../core/models/faq';
@@ -16,7 +18,7 @@ import { FAQModel } from '../../core/models/faq';
   templateUrl: './faq.component.html',
   styleUrls: ['./faq.component.scss'],
 })
-export class FaqComponent implements OnInit, OnDestroy {
+export class FaqComponent implements OnInit, OnDestroy, OnChanges {
   @Input() allFAQs: FAQModel[] = [];
   @Output() scrollToContact = new EventEmitter<void>();
 
@@ -25,9 +27,13 @@ export class FaqComponent implements OnInit, OnDestroy {
   currentFAQChangingIndex = 0;
   isFAQChanging = false;
 
-  ngOnInit(): void {
-    this.initializeFAQs();
-    this.startFAQsCycle();
+  ngOnInit(): void {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['allFAQs'] && changes['allFAQs'].currentValue?.length > 0) {
+      this.initializeFAQs();
+      this.startFAQsCycle();
+    }
   }
 
   ngOnDestroy(): void {

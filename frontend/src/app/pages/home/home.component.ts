@@ -14,6 +14,7 @@ import {
 } from '../../sections';
 import { ServiceModel } from '../../core/models';
 import { ContactComponent } from '../../sections/contact/contact.component';
+import { TechnologyModel } from '../../core/models/technology';
 
 @Component({
   selector: 'app-home',
@@ -36,6 +37,7 @@ export class HomeComponent implements OnInit {
   services: ServiceModel[] = [];
   projects: ProjectModel[] = [];
   faqs: FAQModel[] = [];
+  technologies: TechnologyModel[] = [];
 
   constructor(private dataService: DataService) {}
 
@@ -44,14 +46,17 @@ export class HomeComponent implements OnInit {
   }
 
   private loadData(): void {
-    this.dataService.getServices().subscribe(services => {
+    this.dataService.getServices().subscribe((services) => {
       this.services = services;
     });
-    this.dataService.getProjects().subscribe(projects => {
+    this.dataService.getProjects().subscribe((projects) => {
       this.projects = projects;
     });
-    this.dataService.getFAQs().subscribe(faqs => {
+    this.dataService.getFAQs().subscribe((faqs) => {
       this.faqs = faqs;
+    });
+    this.dataService.getTechnologies().subscribe((technologies) => {
+      this.technologies = technologies;
     });
   }
 

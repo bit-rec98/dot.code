@@ -33,8 +33,7 @@ export class DataService {
         this.dataCache$.next(data);
       },
       error: (error) => {
-        console.error('Error loading UI data:', error);
-        // Datos de fallback en caso de error
+        // console.error('Error loading UI data:', error);
         this.dataCache$.next(this.getFallbackData());
       },
     });
@@ -86,25 +85,25 @@ export class DataService {
   }
 
   // Métodos síncronos para mantener compatibilidad (deprecados)
-  getServicesSync(): ServiceModel[] {
-    return this.dataCache$.value?.services || [];
-  }
+  // getServicesSync(): ServiceModel[] {
+  //   return this.dataCache$.value?.services || [];
+  // }
 
-  getProjectsSync(): ProjectModel[] {
-    return this.dataCache$.value?.projects || [];
-  }
+  // getProjectsSync(): ProjectModel[] {
+  //   return this.dataCache$.value?.projects || [];
+  // }
 
-  getTechnologiesSync(): TechnologyModel[] {
-    return this.dataCache$.value?.technologies || [];
-  }
+  // getTechnologiesSync(): TechnologyModel[] {
+  //   return this.dataCache$.value?.technologies || [];
+  // }
 
-  getIdeasSync(): IdeaModel[] {
-    return this.dataCache$.value?.ideas || [];
-  }
+  // getIdeasSync(): IdeaModel[] {
+  //   return this.dataCache$.value?.ideas || [];
+  // }
 
-  getFAQsSync(): FAQModel[] {
-    return this.dataCache$.value?.faqs || [];
-  }
+  // getFAQsSync(): FAQModel[] {
+  //   return this.dataCache$.value?.faqs || [];
+  // }
 
   // Método para recargar datos manualmente
   reloadData(): void {

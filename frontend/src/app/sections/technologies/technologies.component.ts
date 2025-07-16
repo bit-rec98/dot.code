@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../core/services/data.service';
 import { TechnologyModel } from '../../core/models/technology';
@@ -10,14 +10,8 @@ import { TechnologyModel } from '../../core/models/technology';
   templateUrl: './technologies.component.html',
   styleUrls: ['./technologies.component.scss'],
 })
-export class TechnologiesComponent implements OnInit {
-  technologies: TechnologyModel[] = [];
+export class TechnologiesComponent {
+  @Input() technologies: TechnologyModel[] = [];
 
   constructor(private dataService: DataService) {}
-
-  ngOnInit(): void {
-    this.dataService.getTechnologies().subscribe(technologies => {
-      this.technologies = technologies;
-    });
-  }
 }
