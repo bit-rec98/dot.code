@@ -1,0 +1,85 @@
+// Estilos para el formulario de contacto
+.contact-form {
+  backdrop-filter: blur(10px);
+}
+
+// Animaciones simplificadas para los campos del formulario
+input,
+textarea,
+select {
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: #0ea5e9 !important;
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+// Efectos simplificados para el botón de envío
+button[type="submit"] {
+  background: linear-gradient(45deg, #0ea5e9, #0284c7);
+  transition: background 0.3s ease, opacity 0.3s ease;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(45deg, #0284c7, #0369a1);
+    transform: none;
+    box-shadow: none;
+  }
+
+  &:active:not(:disabled) {
+    transform: none;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Animación para los iconos de validación (simplificada)
+.validation-icon {
+  transition: opacity 0.3s ease;
+}
+
+// Estilos para las tarjetas de información (simplificados)
+.info-card {
+  transition: none;
+
+  &:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .contact-form {
+    padding: 1rem;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px; // Previene zoom en iOS
+  }
+}
+
+// Asegurar que no haya efectos de escala o transformaciones
+* {
+  transform: none !important;
+}
+
+// Permitir solo las transiciones de color
+input:focus,
+textarea:focus,
+select:focus {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+button:hover,
+button:active {
+  transform: none !important;
+  box-shadow: none !important;
+}

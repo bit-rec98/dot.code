@@ -1,30 +1,24 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
   FormBuilder,
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './contact.component.html',
-  styleUrl: './contact.component.scss',
+  styleUrls: ['./contact.component.scss'],
 })
 export class ContactComponent implements OnInit {
-  contactForm!: FormGroup;
+  contactForm: FormGroup;
   formSubmitted = false;
 
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.initForm();
-  }
-
-  initForm(): void {
+  constructor(private fb: FormBuilder) {
     this.contactForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
@@ -32,6 +26,8 @@ export class ContactComponent implements OnInit {
       message: ['', [Validators.required, Validators.minLength(10)]],
     });
   }
+
+  ngOnInit(): void {}
 
   // Getters para acceso fácil a los form fields
   get name() {
@@ -49,7 +45,6 @@ export class ContactComponent implements OnInit {
 
   onSubmit(): void {
     if (this.contactForm.invalid) {
-      // Marca todos los campos como tocados para mostrar errores
       Object.keys(this.contactForm.controls).forEach((key) => {
         const control = this.contactForm.get(key);
         control?.markAsTouched();
@@ -58,17 +53,14 @@ export class ContactComponent implements OnInit {
     }
 
     this.formSubmitted = true;
-
-    // Aquí iría la lógica para enviar el formulario a un backend
     console.log('Form submitted:', this.contactForm.value);
 
-    // Simular respuesta exitosa (en producción, esto se haría después de una respuesta exitosa del backend)
     setTimeout(() => {
       this.resetForm();
     }, 3000);
   }
 
-  resetForm(): void {
+  private resetForm(): void {
     this.contactForm.reset();
     this.formSubmitted = false;
   }
