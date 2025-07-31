@@ -7,9 +7,9 @@
       innovador hacia el desarrollo.
     </p>
 
-    <!-- Grid de ideas con transiciones -->
+    <!-- Vista desktop: Grid de ideas (visible solo en tablet/desktop) -->
     <div
-      class="ideas-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 my-8"
+      class="hidden sm:grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 my-8"
     >
       <div
         *ngFor="let idea of displayedIdeas; let i = index"
@@ -26,17 +26,12 @@
           [ngClass]="idea.bgClass || 'bg-gray-800'"
           class="p-6 h-full flex flex-col"
         >
-          <!-- Título -->
           <h3 class="text-lg font-bold text-white mb-4 leading-tight">
             {{ idea.title }}
           </h3>
-
-          <!-- Descripción -->
           <p class="text-gray-100 text-sm leading-relaxed flex-grow mb-4">
             {{ idea.description }}
           </p>
-
-          <!-- Herramientas/Tecnologías -->
           <div class="mb-4" *ngIf="idea.tools && idea.tools.length > 0">
             <div class="flex flex-wrap gap-2">
               <span
@@ -47,8 +42,6 @@
               </span>
             </div>
           </div>
-
-          <!-- Icono decorativo -->
           <div class="mt-auto flex justify-end">
             <div
               class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center"
@@ -70,6 +63,87 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Vista móvil: Carrusel de ideas (visible solo en móvil) -->
+    <div class="block sm:hidden relative my-8">
+      <!-- Contenedor del carrusel -->
+      <div class="overflow-hidden">
+        <div
+          class="flex snap-x snap-mandatory w-full overflow-hidden scrollbar-hide"
+          style="scroll-behavior: smooth"
+          id="ideasCarousel"
+        >
+          <ng-container *ngFor="let idea of displayedIdeas; let i = index">
+            <div
+              class="w-full flex-shrink-0 snap-center px-2 transition-all duration-500"
+              [ngClass]="{
+                'opacity-0 scale-95':
+                  isIdeaChanging && i === currentIdeaChangingIndex,
+                'opacity-100 scale-100': !(
+                  isIdeaChanging && i === currentIdeaChangingIndex
+                )
+              }"
+            >
+              <div
+                [ngClass]="idea.bgClass || 'bg-gray-800'"
+                class="rounded-lg shadow-lg p-6 h-full flex flex-col"
+              >
+                <h3 class="text-lg font-bold text-white mb-4 leading-tight">
+                  {{ idea.title }}
+                </h3>
+                <p class="text-gray-100 text-sm leading-relaxed flex-grow mb-4">
+                  {{ idea.description }}
+                </p>
+                <div class="mb-4" *ngIf="idea.tools && idea.tools.length > 0">
+                  <div class="flex flex-wrap gap-2">
+                    <span
+                      *ngFor="let tool of idea.tools"
+                      class="text-xs bg-white/10 text-white px-2 py-1 rounded-full"
+                    >
+                      {{ tool }}
+                    </span>
+                  </div>
+                </div>
+                <div class="mt-auto flex justify-end">
+                  <div
+                    class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-4 w-4 text-white"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+
+      <!-- Indicadores del carrusel (solo móvil) -->
+      <div class="flex justify-center mt-6">
+        <ng-container *ngFor="let idea of displayedIdeas; let i = index">
+          <div
+            class="mx-1 w-2 h-2 rounded-full cursor-pointer transition-all"
+            [ngClass]="{
+              'bg-sky-500': i === currentMobileIdeaIndex,
+              'bg-gray-500': i !== currentMobileIdeaIndex
+            }"
+            (click)="scrollToIdea(i)"
+          ></div>
+        </ng-container>
       </div>
     </div>
 

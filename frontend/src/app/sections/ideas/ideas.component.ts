@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../core/services/data.service';
 import { IdeaModel } from '../../core/models/idea';
@@ -10,21 +16,29 @@ import { IdeaModel } from '../../core/models/idea';
   templateUrl: './ideas.component.html',
   styleUrls: ['./ideas.component.scss'],
 })
-export class IdeasComponent implements OnInit, OnDestroy {
+export class IdeasComponent implements OnInit, OnDestroy, AfterViewInit {
   allIdeas: IdeaModel[] = [];
   displayedIdeas: IdeaModel[] = [];
   ideaInterval: any;
   currentIdeaChangingIndex = 0;
   isIdeaChanging = false;
+  currentMobileIdeaIndex = 0;
 
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    this.dataService.getIdeas().subscribe(ideas => {
+    this.dataService.getIdeas().subscribe((ideas) => {
       this.allIdeas = ideas;
       this.initializeIdeas();
       this.startIdeasCycle();
     });
+  }
+
+  ngAfterViewInit(): void {
+    this.setupCarouselScrollListener();
   }
 
   ngOnDestroy(): void {
@@ -78,6 +92,30 @@ export class IdeasComponent implements OnInit, OnDestroy {
       this.allIdeas.push(this.allIdeas.shift()!);
       this.displayedIdeas[this.currentIdeaChangingIndex] = nextIdea;
       this.isIdeaChanging = false;
+      this.cdRef.detectChanges();
     }, 500);
+  }
+
+  private setupCarouselScrollListener(): void {
+    const carousel = document.getElementById('ideasCarousel');
+    if (carousel) {
+      carousel.addEventListener('scroll', () => {
+        const cardWidth = carousel.clientWidth;
+        const index = Math.round(carousel.scrollLeft / cardWidth);
+        if (index !== this.currentMobileIdeaIndex) {
+          this.currentMobileIdeaIndex = index;
+          this.cdRef.detectChanges();
+        }
+      });
+    }
+  }
+
+  scrollToIdea(index: number): void {
+    const carousel = document.getElementById('ideasCarousel');
+    if (!carousel) return;
+
+    const cardWidth = carousel.clientWidth;
+    carousel.scrollTo({ left: cardWidth * index, behavior: 'smooth' });
+    this.currentMobileIdeaIndex = index;
   }
 }

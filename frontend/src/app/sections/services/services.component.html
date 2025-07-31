@@ -8,25 +8,12 @@
       actualizadas y funcionando sin problemas.
     </p>
 
-    <!-- Vista móvil: Carrusel de servicios -->
-    <div class="block sm:hidden relative my-8">
-      <div class="overflow-hidden">
-        <div
-          class="flex snap-x snap-mandatory w-full overflow-x-scroll scrollbar-hide"
-          style="scroll-behavior: smooth"
-          id="servicesMobileCarousel"
-        >
-          <div
-            *ngFor="let service of services; let i = index"
-            class="w-full flex-shrink-0 snap-center px-2"
-          >
-            <app-service-card [serviceData]="service"></app-service-card>
-          </div>
-        </div>
-      </div>
-
-      <!-- Controles -->
-      <div class="absolute top-1/2 left-0 transform -translate-y-1/2 z-10">
+    <!-- Carrusel Universal (móvil y desktop) -->
+    <div class="relative my-8">
+      <!-- Botones laterales (solo desktop) -->
+      <div
+        class="hidden sm:block absolute left-0 top-1/2 -translate-y-1/2 z-10 -ml-6"
+      >
         <button
           (click)="scrollCarousel(-1)"
           class="bg-sky-600/70 hover:bg-sky-600 text-white rounded-full p-2 focus:outline-none transition-all shadow-lg"
@@ -48,7 +35,9 @@
         </button>
       </div>
 
-      <div class="absolute top-1/2 right-0 transform -translate-y-1/2 z-10">
+      <div
+        class="hidden sm:block absolute right-0 top-1/2 -translate-y-1/2 z-10 -mr-6"
+      >
         <button
           (click)="scrollCarousel(1)"
           class="bg-sky-600/70 hover:bg-sky-600 text-white rounded-full p-2 focus:outline-none transition-all shadow-lg"
@@ -70,28 +59,48 @@
         </button>
       </div>
 
-      <!-- Indicadores -->
-      <div class="flex justify-center mt-4">
+      <!-- Contenedor del carrusel -->
+      <div class="overflow-hidden">
         <div
-          *ngFor="let service of services; let i = index"
-          class="mx-1 w-2 h-2 rounded-full cursor-pointer transition-all"
-          [ngClass]="{
-            'bg-sky-500': i === currentServiceIndex,
-            'bg-gray-500': i !== currentServiceIndex
-          }"
-          (click)="scrollToCard(i)"
-        ></div>
+          class="flex snap-x snap-mandatory w-full overflow-hidden scrollbar-hide"
+          style="scroll-behavior: smooth"
+          id="servicesMobileCarousel"
+        >
+          <!-- Móvil: 1 item por vez, Desktop: 3 items por vez -->
+          <ng-container *ngFor="let service of services; let i = index">
+            <div class="w-full sm:w-full md:w-9/12 lg:w-1/3 flex-shrink-0 snap-center px-2">
+              <app-service-card [serviceData]="service"></app-service-card>
+            </div>
+          </ng-container>
+        </div>
       </div>
-    </div>
 
-    <!-- Vista tablet/desktop: Grid de servicios -->
-    <div
-      class="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 my-8"
-    >
-      <app-service-card
-        *ngFor="let service of services"
-        [serviceData]="service"
-      ></app-service-card>
+      <!-- Indicadores (visible en ambas vistas) -->
+      <div class="flex justify-center mt-6">
+        <ng-container *ngFor="let service of services; let i = index">
+          <!-- Móvil: muestra un indicador por cada elemento -->
+          <div
+            *ngIf="!isDesktopView()"
+            class="mx-1 w-2 h-2 rounded-full cursor-pointer transition-all"
+            [ngClass]="{
+              'bg-sky-500': i === currentServiceIndex,
+              'bg-gray-500': i !== currentServiceIndex
+            }"
+            (click)="scrollToCard(i)"
+          ></div>
+
+          <!-- Desktop: muestra un indicador por cada grupo de 3 elementos -->
+          <div
+            *ngIf="isDesktopView() && i % 3 === 0"
+            class="mx-1 w-2 h-2 rounded-full cursor-pointer transition-all"
+            [ngClass]="{
+              'bg-sky-500': isCurrentGroup(i),
+              'bg-gray-500': !isCurrentGroup(i)
+            }"
+            (click)="scrollToCardGroup(i)"
+          ></div>
+        </ng-container>
+      </div>
     </div>
   </article>
 </section>

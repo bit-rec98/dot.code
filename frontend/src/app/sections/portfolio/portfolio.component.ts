@@ -5,27 +5,31 @@ import {
   OnDestroy,
   AfterViewInit,
   ChangeDetectorRef,
+  HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectModel } from '../../core/models/project';
+import { ProjectCardComponent } from '../../components';
 
 @Component({
   selector: 'app-portfolio',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ProjectCardComponent],
   templateUrl: './portfolio.component.html',
   styleUrls: ['./portfolio.component.scss'],
 })
 export class PortfolioComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() projects: ProjectModel[] = [];
 
-  currentMobileProjectIndex = 0;
-  currentDesktopProjectIndex = 0;
+  currentProjectIndex = 0;
   projectsPerGroup = 3;
+  private windowWidth = 0;
 
   constructor(private cdRef: ChangeDetectorRef) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.windowWidth = window.innerWidth;
+  }
 
   ngOnDestroy(): void {}
 
@@ -33,76 +37,99 @@ export class PortfolioComponent implements OnInit, OnDestroy, AfterViewInit {
     this.setupCarouselScrollListener();
   }
 
+  @HostListener('window:resize')
+  onWindowResize(): void {
+    this.windowWidth = window.innerWidth;
+    this.cdRef.detectChanges();
+  }
+
+  isDesktopView(): boolean {
+    return this.windowWidth >= 640; // 640px es el punto de quiebre de 'sm' en Tailwind
+  }
+
+  // Método auxiliar para la lógica de indicadores en desktop
+  isCurrentGroup(index: number): boolean {
+    return Math.floor(this.currentProjectIndex / 3) === Math.floor(index / 3);
+  }
+
   private setupCarouselScrollListener(): void {
-    const mobileCarousel = document.getElementById('projectsCarouselMobile');
-    if (mobileCarousel) {
-      mobileCarousel.addEventListener('scroll', () => {
-        const index = Math.round(
-          mobileCarousel.scrollLeft / mobileCarousel.clientWidth
-        );
-        if (index !== this.currentMobileProjectIndex) {
-          this.currentMobileProjectIndex = index;
-          this.cdRef.detectChanges();
+    const projectsCarousel = document.getElementById('projectsCarousel');
+    if (projectsCarousel) {
+      projectsCarousel.addEventListener('scroll', () => {
+        if (this.isDesktopView()) {
+          // En desktop, cada grupo tiene 3 elementos
+          const cardWidth = projectsCarousel.clientWidth / 3;
+          const index = Math.round(projectsCarousel.scrollLeft / cardWidth);
+          if (index !== this.currentProjectIndex) {
+            this.currentProjectIndex = index;
+            this.cdRef.detectChanges();
+          }
+        } else {
+          // En móvil, cada tarjeta ocupa todo el ancho
+          const cardWidth = projectsCarousel.clientWidth;
+          const index = Math.round(projectsCarousel.scrollLeft / cardWidth);
+          if (index !== this.currentProjectIndex) {
+            this.currentProjectIndex = index;
+            this.cdRef.detectChanges();
+          }
         }
       });
     }
   }
 
-  getProjectGroups(): number[] {
-    const totalGroups = Math.ceil(this.projects.length / this.projectsPerGroup);
-    return Array.from(
-      { length: totalGroups },
-      (_, i) => i * this.projectsPerGroup
-    );
-  }
-
   nextProjectGroup(): void {
-    const totalGroups = Math.ceil(this.projects.length / this.projectsPerGroup);
-    this.currentDesktopProjectIndex =
-      (this.currentDesktopProjectIndex + 1) % totalGroups;
-  }
-
-  prevProjectGroup(): void {
-    const totalGroups = Math.ceil(this.projects.length / this.projectsPerGroup);
-    this.currentDesktopProjectIndex =
-      (this.currentDesktopProjectIndex - 1 + totalGroups) % totalGroups;
-  }
-
-  setProjectGroup(index: number): void {
-    this.currentDesktopProjectIndex = index;
-  }
-
-  openProjectUrl(url: string): void {
-    window.open(url, '_blank');
-  }
-
-  // Métodos para navegación móvil
-  scrollCarousel(carouselId: string, direction: number): void {
-    const carousel = document.getElementById(carouselId);
+    const carousel = document.getElementById('projectsCarousel');
     if (!carousel) return;
 
-    const cardWidth = carousel.clientWidth;
-    carousel.scrollBy({ left: cardWidth * direction, behavior: 'smooth' });
+    if (this.isDesktopView()) {
+      carousel.scrollBy({ left: carousel.clientWidth, behavior: 'smooth' });
+    }
 
-    // Actualizar el índice después del scroll
     setTimeout(() => {
-      const newIndex = Math.round(carousel.scrollLeft / cardWidth);
-      if (carouselId === 'projectsCarouselMobile') {
-        this.currentMobileProjectIndex = newIndex;
+      if (this.isDesktopView()) {
+        const cardWidth = carousel.clientWidth / 3;
+        this.currentProjectIndex = Math.round(carousel.scrollLeft / cardWidth);
       }
       this.cdRef.detectChanges();
     }, 500);
   }
 
-  scrollToCard(carouselId: string, index: number): void {
-    const carousel = document.getElementById(carouselId);
+  prevProjectGroup(): void {
+    const carousel = document.getElementById('projectsCarousel');
+    if (!carousel) return;
+
+    if (this.isDesktopView()) {
+      carousel.scrollBy({ left: -carousel.clientWidth, behavior: 'smooth' });
+    }
+
+    setTimeout(() => {
+      if (this.isDesktopView()) {
+        const cardWidth = carousel.clientWidth / 3;
+        this.currentProjectIndex = Math.round(carousel.scrollLeft / cardWidth);
+      }
+      this.cdRef.detectChanges();
+    }, 500);
+  }
+
+  scrollToCard(index: number): void {
+    const carousel = document.getElementById('projectsCarousel');
     if (!carousel) return;
 
     const cardWidth = carousel.clientWidth;
     carousel.scrollTo({ left: cardWidth * index, behavior: 'smooth' });
+    this.currentProjectIndex = index;
+  }
 
-    if (carouselId === 'projectsCarouselMobile') {
-      this.currentMobileProjectIndex = index;
-    }
+  scrollToCardGroup(startIndex: number): void {
+    const carousel = document.getElementById('projectsCarousel');
+    if (!carousel) return;
+
+    // Desplazar al grupo (cada 3 elementos)
+    const groupIndex = Math.floor(startIndex / 3);
+    carousel.scrollTo({
+      left: carousel.clientWidth * groupIndex,
+      behavior: 'smooth',
+    });
+    this.currentProjectIndex = startIndex;
   }
 }

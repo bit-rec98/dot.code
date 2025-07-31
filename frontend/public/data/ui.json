@@ -69,6 +69,13 @@
       "icon": "assets/icons/service10.svg",
       "bgClass": "bg-gradient-to-br from-yellow-900 to-yellow-700",
       "features": ["Ethereum", "Smart Contracts", "DApps"]
+    },
+    {
+      "title": "Automatización de Procesos",
+      "description": "Optimización de flujos de trabajo empresariales mediante RPA y herramientas de automatización.",
+      "icon": "assets/icons/service11.svg",
+      "bgClass": "bg-gradient-to-br from-gray-900 to-gray-700",
+      "features": ["RPA", "Workflow Automation", "Process Optimization"]
     }
   ],
   "projects": [
