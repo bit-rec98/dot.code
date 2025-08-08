@@ -1,10 +1,8 @@
-// import { TechnologyModel } from './technology';
-
 export interface ProjectModel {
+  id: string;
   title: string;
   description: string;
-  // screenshot: string;
   url: string;
   technologies: string[];
-  // technologies: TechnologyModel[];
+  bgClass?: string;
 }
