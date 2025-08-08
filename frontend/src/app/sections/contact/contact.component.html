@@ -15,15 +15,76 @@
         </p>
       </div>
 
-      <!-- Mensaje de éxito -->
+      <!-- Mensaje de éxito/error -->
       <div
-        *ngIf="formSubmitted"
-        class="mb-8 p-6 bg-gradient-to-r from-green-900/50 to-green-800/50 border border-green-700 rounded-lg backdrop-blur-sm"
+        *ngIf="submitMessage"
+        class="mb-8 p-6 rounded-lg backdrop-blur-sm border"
+        [ngClass]="{
+          'bg-gradient-to-r from-green-900/50 to-green-800/50 border-green-700':
+            submitMessageType === 'success',
+          'bg-gradient-to-r from-red-900/50 to-red-800/50 border-red-700':
+            submitMessageType === 'error'
+        }"
       >
         <div class="flex items-center">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 text-green-400 mr-3"
+            class="h-6 w-6 mr-3"
+            [ngClass]="{
+              'text-green-400': submitMessageType === 'success',
+              'text-red-400': submitMessageType === 'error'
+            }"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              *ngIf="submitMessageType === 'success'"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+            <path
+              *ngIf="submitMessageType === 'error'"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+            />
+          </svg>
+          <div>
+            <h3
+              class="font-semibold"
+              [ngClass]="{
+                'text-green-100': submitMessageType === 'success',
+                'text-red-100': submitMessageType === 'error'
+              }"
+            >
+              {{ submitMessageType === "success" ? "¡Éxito!" : "¡Error!" }}
+            </h3>
+            <p
+              class="text-sm"
+              [ngClass]="{
+                'text-green-200': submitMessageType === 'success',
+                'text-red-200': submitMessageType === 'error'
+              }"
+            >
+              {{ submitMessage }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Información de rate limiting (opcional, para mostrar al usuario) -->
+      <div
+        *ngIf="!canSendEmail()"
+        class="mb-8 p-4 bg-yellow-900/30 border border-yellow-700 rounded-lg backdrop-blur-sm"
+      >
+        <div class="flex items-center text-yellow-200">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-5 w-5 mr-2"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -32,17 +93,13 @@
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
             />
           </svg>
-          <div>
-            <h3 class="text-green-100 font-semibold">
-              ¡Mensaje enviado exitosamente!
-            </h3>
-            <p class="text-green-200 text-sm">
-              Gracias por contactarnos. Te responderemos pronto.
-            </p>
-          </div>
+          <span class="text-sm">
+            Has usado {{ getEmailStats().todayCount }} de
+            {{ getEmailStats().maxDaily }} emails diarios disponibles.
+          </span>
         </div>
       </div>
 
@@ -184,10 +241,11 @@
         <div class="text-center">
           <button
             type="submit"
-            [disabled]="formSubmitted"
+            [disabled]="isLoading || formSubmitted || !canSendEmail()"
             class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 text-white font-medium text-lg rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg
+              *ngIf="!isLoading"
               xmlns="http://www.w3.org/2000/svg"
               class="h-5 w-5 mr-2"
               fill="none"
@@ -201,7 +259,19 @@
                 d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
               />
             </svg>
-            {{ formSubmitted ? "Mensaje Enviado" : "Enviar Mensaje" }}
+            <div
+              *ngIf="isLoading"
+              class="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"
+            ></div>
+            {{
+              isLoading
+                ? "Enviando..."
+                : formSubmitted
+                ? "Mensaje Enviado"
+                : !canSendEmail()
+                ? "Límite Alcanzado"
+                : "Enviar Mensaje"
+            }}
           </button>
         </div>
       </form>
@@ -230,7 +300,7 @@
             </svg>
           </div>
           <h3 class="text-lg font-semibold text-white mb-2">Email</h3>
-          <p class="text-gray-400">contacto&#64;dot.code</p>
+          <p class="text-gray-400">contact.dev.cristian&#64;gmail.com</p>
         </div>
 
         <div
