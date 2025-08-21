@@ -34,9 +34,6 @@ export class EmailService {
 
   private validateConfiguration(): void {
     if (!this.SERVICE_ID || !this.TEMPLATE_ID || !this.PUBLIC_KEY) {
-      console.error(
-        'EmailJS configuration missing. Check environment variables.'
-      );
       throw new Error('EmailJS configuration is incomplete.');
     }
   }
@@ -86,7 +83,6 @@ export class EmailService {
       emailjs
         .send(this.SERVICE_ID, this.TEMPLATE_ID, templateParams)
         .then((response: EmailJSResponseStatus) => {
-          console.log('Email enviado exitosamente:', response);
           this.recordSuccessfulSend();
           observer.next({
             success: true,
@@ -95,8 +91,6 @@ export class EmailService {
           observer.complete();
         })
         .catch((error) => {
-          console.error('Error al enviar email:', error);
-
           const errorResponse = this.handleEmailError(error);
           observer.error(errorResponse);
         });

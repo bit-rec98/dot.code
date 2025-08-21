@@ -2,14 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* You can add global styles to this file, and also import other style files */
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   scroll-behavior: smooth;
-  font-family: "Poppins", sans-serif;
+  font-family: "JetBrains Mono", "Courier New", monospace;
 }
 
 body {
@@ -18,11 +16,95 @@ body {
 }
 
 :root {
-  --white: #cccccc;
+  --white: #F5F5F5;
   --black: #121212;
+  --border: #555555;
+  --accent: #F5F5F5;
 }
 
-/* Ajuste para scroll considerando el header fijo */
 html {
   scroll-padding-top: 80px;
+}
+
+/* Cyberpunk scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--white);
+  border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 245, 245, 0.8);
+}
+
+/* Cyberpunk animations */
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
+
+/* Glitch effect for important elements */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  animation: glitch-1 0.5s infinite;
+  color: rgba(245, 245, 245, 0.8);
+  z-index: -1;
+}
+
+.glitch::after {
+  animation: glitch-2 0.5s infinite;
+  color: rgba(245, 245, 245, 0.8);
+  z-index: -2;
+}
+
+@keyframes glitch-1 {
+  0%, 14%, 15%, 49%, 50%, 99%, 100% {
+    transform: translate(0, 0);
+  }
+  1%, 13% {
+    transform: translate(-1px, 0);
+  }
+  16%, 48% {
+    transform: translate(1px, 0);
+  }
+}
+
+@keyframes glitch-2 {
+  0%, 20%, 21%, 62%, 63%, 99%, 100% {
+    transform: translate(0, 0);
+  }
+  1%, 19% {
+    transform: translate(1px, 0);
+  }
+  22%, 61% {
+    transform: translate(-1px, 0);
+  }
 }

@@ -14,7 +14,7 @@ import { ProjectCardComponent } from '../../components';
 @Component({
   selector: 'app-portfolio',
   standalone: true,
-  imports: [CommonModule, ProjectCardComponent],
+  imports: [CommonModule],
   templateUrl: './portfolio.component.html',
   styleUrls: ['./portfolio.component.scss'],
 })

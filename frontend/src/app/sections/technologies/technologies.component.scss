@@ -18,13 +18,37 @@
   }
 }
 
-// Estilos para el carrusel
+// Animation keyframes
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+// Carousel styles
 #techCarousel {
   overflow-x: hidden;
   scroll-behavior: smooth;
+  transition: transform 1s ease; // Ensure transition is defined
 }
 
-// Ocultar scrollbar
+// Hide scrollbar
 .overflow-hidden {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -34,27 +58,48 @@
   display: none;
 }
 
-// Responsive adjustments
-@media (max-width: 640px) {
-  .technology-card:hover {
-    transform: none !important;
+// Technology item styles
+.tech-item {
+  transition: transform 0.3s ease;
+  min-height: 90px; // Ensure consistent height
+
+  &:hover {
+    transform: translateY(-5px);
   }
 
-  .technology-card {
+  &.fade-in {
+    animation: fadeIn 0.5s forwards;
+  }
+
+  &.fade-out {
+    animation: fadeOut 0.5s forwards;
+  }
+}
+
+// Enhanced single item display for mobile
+@media (max-width: 640px) {
+  .tech-item {
+    margin: 0 auto;
+    max-width: 160px;
+
     &:hover {
-      transform: scale(1.02) !important;
+      transform: none;
+    }
+
+    // Enhance fade animations on mobile
+    &.fade-in {
+      animation-duration: 0.7s;
+    }
+
+    &.fade-out {
+      animation-duration: 0.7s;
     }
   }
 }
 
-// Animación suave para el carrusel
-.transition-transform {
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-// Efecto de pausa en hover
-.relative:hover {
-  .technology-card {
-    animation-play-state: paused;
+// Center single item on very small screens
+@media (max-width: 480px) {
+  .grid-cols-1 {
+    justify-items: center;
   }
 }

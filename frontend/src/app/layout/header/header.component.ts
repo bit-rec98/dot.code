@@ -1,17 +1,23 @@
 import { Component } from '@angular/core';
 import { SidenavComponent } from '../../components/sidenav/sidenav.component';
-import { RouterLink } from '@angular/router';
-import { ViewportScroller } from '@angular/common';
+import { CommonModule, ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [SidenavComponent],
+  imports: [CommonModule, SidenavComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
   isSidenavOpen = false;
+
+  menuItems = [
+    { label: 'Home', section: 'ctaSection' },
+    { label: 'Services', section: 'servicesSection' },
+    { label: 'About', section: 'aboutSection' },
+    { label: 'Contact', section: 'contactSection' },
+  ];
 
   constructor(private viewportScroller: ViewportScroller) {}
 

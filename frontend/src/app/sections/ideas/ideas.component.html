@@ -1,172 +1,80 @@
-<section class="sm:w-1/2 lg:w-5/6 mx-auto py-8">
-  <article class="px-4 sm:px-8 lg:px-16" id="ideasSection">
-    <h1 class="text-2xl sm:text-3xl">Ideas Innovadoras</h1>
-    <p class="text-base sm:text-lg mb-8">
-      Exploramos conceptos creativos y soluciones tecnológicas que podrían
-      transformar diferentes industrias. Estas ideas demuestran nuestro enfoque
-      innovador hacia el desarrollo.
-    </p>
+<section class="py-16 px-4 sm:px-8 lg:px-16 max-w-7xl mx-auto">
+  <article id="ideasSection">
+    <div class="text-center mb-12">
+      <h1 class="text-3xl sm:text-4xl font-mono font-bold mb-4 text-white">
+        [ INNOVATIVE IDEAS ]
+      </h1>
+      <div class="w-24 h-0.5 bg-white mx-auto mb-6"></div>
+      <p class="text-base sm:text-lg font-mono text-white/70 max-w-2xl mx-auto">
+        > Exploring creative concepts and technological solutions that could
+        transform different industries_
+      </p>
+    </div>
 
-    <!-- Vista desktop: Grid de ideas (visible solo en tablet/desktop) -->
-    <div
-      class="hidden sm:grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 my-8"
-    >
+    <!-- Ideas Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       <div
         *ngFor="let idea of displayedIdeas; let i = index"
-        class="idea-card relative overflow-hidden rounded-lg shadow-lg transition-all duration-500 transform"
+        class="border border-white/20 p-6 hover:border-white/40 transition-all duration-300 group relative overflow-hidden flex flex-col min-h-[400px]"
         [ngClass]="{
-          'scale-95 opacity-0':
-            isIdeaChanging && i === currentIdeaChangingIndex,
-          'scale-100 opacity-100': !(
-            isIdeaChanging && i === currentIdeaChangingIndex
-          )
+          'opacity-50': isIdeaChanging && i === currentIdeaChangingIndex
         }"
       >
+        <!-- Innovation indicator -->
         <div
-          [ngClass]="idea.bgClass || 'bg-gray-800'"
-          class="p-6 h-full flex flex-col"
+          class="absolute top-4 right-4 w-2 h-2 bg-white/50 animate-pulse"
+        ></div>
+
+        <!-- Idea number -->
+        <div class="text-xs font-mono text-white/50 mb-4">
+          [ CONCEPT_{{ (i + 1).toString().padStart(2, "0") }} ]
+        </div>
+
+        <!-- Idea title -->
+        <h3
+          class="text-lg font-mono font-bold text-white mb-4 uppercase tracking-wider"
         >
-          <h3 class="text-lg font-bold text-white mb-4 leading-tight">
-            {{ idea.title }}
-          </h3>
-          <p class="text-gray-100 text-sm leading-relaxed flex-grow mb-4">
-            {{ idea.description }}
-          </p>
-          <div class="mb-4" *ngIf="idea.tools && idea.tools.length > 0">
-            <div class="flex flex-wrap gap-2">
-              <span
-                *ngFor="let tool of idea.tools"
-                class="text-xs bg-white/10 text-white px-2 py-1 rounded-full"
-              >
-                {{ tool }}
-              </span>
-            </div>
-          </div>
-          <div class="mt-auto flex justify-end">
-            <div
-              class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center"
+          {{ idea.title }}
+        </h3>
+
+        <!-- Idea description -->
+        <p class="text-sm font-mono text-white/70 mb-6 leading-relaxed">
+          {{ idea.description }}
+        </p>
+
+        <!-- Tools -->
+        <div class="mb-6" *ngIf="idea.tools && idea.tools.length > 0">
+          <div class="text-xs font-mono text-white/50 mb-2">[ TOOLS ]</div>
+          <div class="flex flex-wrap gap-2">
+            <span
+              *ngFor="let tool of idea.tools"
+              class="text-xs font-mono border border-white/30 text-white/80 px-2 py-1"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-4 w-4 text-white"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                />
-              </svg>
-            </div>
+              {{ tool }}
+            </span>
           </div>
+        </div>
+
+        <!-- Spacer to push status indicator to bottom -->
+        <div class="flex-grow"></div>
+
+        <!-- Status indicator -->
+        <div class="flex items-center text-xs font-mono text-white/50 mt-auto">
+          <div class="w-1 h-1 bg-white/50 mr-2"></div>
+          <span>[ CONCEPT STAGE ]</span>
         </div>
       </div>
     </div>
 
-    <!-- Vista móvil: Carrusel de ideas (visible solo en móvil) -->
-    <div class="block sm:hidden relative my-8">
-      <!-- Contenedor del carrusel -->
-      <div class="overflow-hidden">
-        <div
-          class="flex snap-x snap-mandatory w-full overflow-hidden scrollbar-hide"
-          style="scroll-behavior: smooth"
-          id="ideasCarousel"
-        >
-          <ng-container *ngFor="let idea of displayedIdeas; let i = index">
-            <div
-              class="w-full flex-shrink-0 snap-center px-2 transition-all duration-500"
-              [ngClass]="{
-                'opacity-0 scale-95':
-                  isIdeaChanging && i === currentIdeaChangingIndex,
-                'opacity-100 scale-100': !(
-                  isIdeaChanging && i === currentIdeaChangingIndex
-                )
-              }"
-            >
-              <div
-                [ngClass]="idea.bgClass || 'bg-gray-800'"
-                class="rounded-lg shadow-lg p-6 h-full flex flex-col"
-              >
-                <h3 class="text-lg font-bold text-white mb-4 leading-tight">
-                  {{ idea.title }}
-                </h3>
-                <p class="text-gray-100 text-sm leading-relaxed flex-grow mb-4">
-                  {{ idea.description }}
-                </p>
-                <div class="mb-4" *ngIf="idea.tools && idea.tools.length > 0">
-                  <div class="flex flex-wrap gap-2">
-                    <span
-                      *ngFor="let tool of idea.tools"
-                      class="text-xs bg-white/10 text-white px-2 py-1 rounded-full"
-                    >
-                      {{ tool }}
-                    </span>
-                  </div>
-                </div>
-                <div class="mt-auto flex justify-end">
-                  <div
-                    class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="h-4 w-4 text-white"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </ng-container>
-        </div>
+    <!-- Auto-rotation indicator -->
+    <div class="text-center mt-12">
+      <div
+        class="inline-flex items-center text-xs font-mono text-white/50 uppercase tracking-wider"
+      >
+        <div class="w-1 h-1 bg-white/50 animate-pulse mr-2"></div>
+        <span>Ideas update automatically to show different concepts</span>
+        <div class="w-1 h-1 bg-white/50 animate-pulse ml-2"></div>
       </div>
-
-      <!-- Indicadores del carrusel (solo móvil) -->
-      <div class="flex justify-center mt-6">
-        <ng-container *ngFor="let idea of displayedIdeas; let i = index">
-          <div
-            class="mx-1 w-2 h-2 rounded-full cursor-pointer transition-all"
-            [ngClass]="{
-              'bg-sky-500': i === currentMobileIdeaIndex,
-              'bg-gray-500': i !== currentMobileIdeaIndex
-            }"
-            (click)="scrollToIdea(i)"
-          ></div>
-        </ng-container>
-      </div>
-    </div>
-
-    <!-- Indicador de rotación -->
-    <div class="text-center mt-6">
-      <p class="text-sm text-gray-400">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4 inline mr-1"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-          />
-        </svg>
-        Las ideas se actualizan automáticamente para mostrarte diferentes
-        conceptos
-      </p>
     </div>
   </article>
 </section>

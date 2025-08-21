@@ -33,7 +33,6 @@ export class DataService {
         this.dataCache$.next(data);
       },
       error: (error) => {
-        // console.error('Error loading UI data:', error);
         this.dataCache$.next(this.getFallbackData());
       },
     });

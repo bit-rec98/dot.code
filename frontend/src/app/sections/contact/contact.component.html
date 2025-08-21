@@ -1,364 +1,148 @@
-<section class="sm:w-1/2 lg:w-5/6 mx-auto py-8">
-  <article class="px-4 sm:px-8 lg:px-16" id="contactSection">
-    <div class="max-w-4xl mx-auto">
-      <!-- Encabezado -->
-      <div class="text-center mb-12">
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
-          ¿Tenés un proyecto en mente?
-        </h1>
-        <p class="text-lg sm:text-xl text-gray-300 mb-2">
-          Contactanos y hagamos realidad tu visión digital
-        </p>
-        <p class="text-base text-gray-400">
-          Completá el formulario y nos pondremos en contacto contigo en menos de
-          24 horas
-        </p>
-      </div>
+<section class="py-16 px-4 sm:px-8 lg:px-16 max-w-7xl mx-auto">
+  <article id="contactSection">
+    <div class="text-center mb-12">
+      <h1 class="text-3xl sm:text-4xl font-mono font-bold mb-4 text-white">
+        [ CONTACT ]
+      </h1>
+      <div class="w-24 h-0.5 bg-white mx-auto mb-6"></div>
+      <p class="text-base sm:text-lg font-mono text-white/70 max-w-2xl mx-auto">
+        > Have a project in mind? Contact us and let's make your digital vision a reality_
+      </p>
+    </div>
 
-      <!-- Mensaje de éxito/error -->
-      <div
-        *ngIf="submitMessage"
-        class="mb-8 p-6 rounded-lg backdrop-blur-sm border"
-        [ngClass]="{
-          'bg-gradient-to-r from-green-900/50 to-green-800/50 border-green-700':
-            submitMessageType === 'success',
-          'bg-gradient-to-r from-red-900/50 to-red-800/50 border-red-700':
-            submitMessageType === 'error'
-        }"
-      >
-        <div class="flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6 mr-3"
-            [ngClass]="{
-              'text-green-400': submitMessageType === 'success',
-              'text-red-400': submitMessageType === 'error'
-            }"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              *ngIf="submitMessageType === 'success'"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-            <path
-              *ngIf="submitMessageType === 'error'"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-            />
-          </svg>
-          <div>
-            <h3
-              class="font-semibold"
-              [ngClass]="{
-                'text-green-100': submitMessageType === 'success',
-                'text-red-100': submitMessageType === 'error'
-              }"
-            >
-              {{ submitMessageType === "success" ? "¡Éxito!" : "¡Error!" }}
-            </h3>
-            <p
-              class="text-sm"
-              [ngClass]="{
-                'text-green-200': submitMessageType === 'success',
-                'text-red-200': submitMessageType === 'error'
-              }"
-            >
-              {{ submitMessage }}
-            </p>
-          </div>
+    <!-- Status Messages -->
+    <div
+      *ngIf="submitMessage"
+      class="mb-8 border border-white/30 p-4 bg-black/20"
+    >
+      <div class="flex items-center font-mono text-sm">
+        <span class="text-white/50 mr-2">[ {{ submitMessageType === 'success' ? 'SUCCESS' : 'ERROR' }} ]</span>
+        <span class="text-white">{{ submitMessage }}</span>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <!-- Contact Form -->
+      <div>
+        <div class="text-xs font-mono text-white/50 mb-6 uppercase tracking-wider">
+          [ CONTACT FORM ]
         </div>
-      </div>
 
-      <!-- Información de rate limiting (opcional, para mostrar al usuario) -->
-      <div
-        *ngIf="!canSendEmail()"
-        class="mb-8 p-4 bg-yellow-900/30 border border-yellow-700 rounded-lg backdrop-blur-sm"
-      >
-        <div class="flex items-center text-yellow-200">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 mr-2"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-            />
-          </svg>
-          <span class="text-sm">
-            Has usado {{ getEmailStats().todayCount }} de
-            {{ getEmailStats().maxDaily }} emails diarios disponibles.
-          </span>
-        </div>
-      </div>
-
-      <!-- Formulario de contacto -->
-      <form
-        [formGroup]="contactForm"
-        (ngSubmit)="onSubmit()"
-        class="contact-form space-y-6"
-        [class.opacity-50]="formSubmitted"
-      >
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Campo Nombre -->
+        <form
+          [formGroup]="contactForm"
+          (ngSubmit)="onSubmit()"
+          class="space-y-6"
+        >
+          <!-- Name field -->
           <div>
-            <label
-              for="name"
-              class="block text-sm font-medium text-gray-300 mb-2"
-            >
-              Nombre completo *
+            <label class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider">
+              Name *
             </label>
             <input
               type="text"
-              id="name"
               formControlName="name"
-              placeholder="Tu nombre"
-              class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-sky-500 transition-colors duration-300 backdrop-blur-sm"
+              placeholder="Enter your name"
+              class="w-full bg-transparent border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors"
               [class.border-red-500]="name?.invalid && name?.touched"
-              [class.border-green-500]="name?.valid && name?.touched"
             />
-            <div
-              *ngIf="name?.invalid && name?.touched"
-              class="mt-1 text-red-400 text-sm"
-            >
-              <span *ngIf="name?.errors?.['required']"
-                >El nombre es requerido</span
-              >
-              <span *ngIf="name?.errors?.['minlength']"
-                >El nombre debe tener al menos 3 caracteres</span
-              >
+            <div *ngIf="name?.invalid && name?.touched" class="mt-1 text-xs font-mono text-red-400">
+              <span *ngIf="name?.errors?.['required']">Name is required</span>
+              <span *ngIf="name?.errors?.['minlength']">Name must be at least 3 characters</span>
             </div>
           </div>
 
-          <!-- Campo Email -->
+          <!-- Email field -->
           <div>
-            <label
-              for="email"
-              class="block text-sm font-medium text-gray-300 mb-2"
-            >
-              Correo electrónico *
+            <label class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider">
+              Email *
             </label>
             <input
               type="email"
-              id="email"
               formControlName="email"
-              placeholder="tu@email.com"
-              class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-sky-500 transition-colors duration-300 backdrop-blur-sm"
+              placeholder="your@email.com"
+              class="w-full bg-transparent border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors"
               [class.border-red-500]="email?.invalid && email?.touched"
-              [class.border-green-500]="email?.valid && email?.touched"
             />
-            <div
-              *ngIf="email?.invalid && email?.touched"
-              class="mt-1 text-red-400 text-sm"
-            >
-              <span *ngIf="email?.errors?.['required']"
-                >El email es requerido</span
-              >
-              <span *ngIf="email?.errors?.['email']"
-                >Ingresa un email válido</span
-              >
+            <div *ngIf="email?.invalid && email?.touched" class="mt-1 text-xs font-mono text-red-400">
+              <span *ngIf="email?.errors?.['required']">Email is required</span>
+              <span *ngIf="email?.errors?.['email']">Enter a valid email</span>
             </div>
           </div>
-        </div>
 
-        <!-- Campo Asunto -->
-        <div>
-          <label
-            for="subject"
-            class="block text-sm font-medium text-gray-300 mb-2"
-          >
-            Asunto *
-          </label>
-          <select
-            id="subject"
-            formControlName="subject"
-            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-sky-500 transition-colors duration-300 backdrop-blur-sm"
-            [class.border-red-500]="subject?.invalid && subject?.touched"
-            [class.border-green-500]="subject?.valid && subject?.touched"
-          >
-            <option value="" disabled class="text-gray-400">
-              Selecciona un tema
-            </option>
-            <option value="desarrollo-web">Desarrollo Web</option>
-            <option value="aplicacion-movil">Aplicación Móvil</option>
-            <option value="consultoria">Consultoría IT</option>
-            <option value="mantenimiento">Mantenimiento</option>
-            <option value="soporte">Soporte Técnico</option>
-            <option value="otro">Otro</option>
-          </select>
-          <div
-            *ngIf="subject?.invalid && subject?.touched"
-            class="mt-1 text-red-400 text-sm"
-          >
-            <span *ngIf="subject?.errors?.['required']"
-              >Por favor selecciona un asunto</span
+          <!-- Subject field -->
+          <div>
+            <label class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider">
+              Subject *
+            </label>
+            <select
+              formControlName="subject"
+              class="w-full bg-black border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors"
+              [class.border-red-500]="subject?.invalid && subject?.touched"
             >
+              <option value="" disabled>Select a topic</option>
+              <option value="desarrollo-web">Web Development</option>
+              <option value="aplicacion-movil">Mobile Application</option>
+              <option value="consultoria">IT Consulting</option>
+              <option value="mantenimiento">Maintenance</option>
+              <option value="soporte">Technical Support</option>
+              <option value="otro">Other</option>
+            </select>
+            <div *ngIf="subject?.invalid && subject?.touched" class="mt-1 text-xs font-mono text-red-400">
+              <span *ngIf="subject?.errors?.['required']">Please select a subject</span>
+            </div>
           </div>
-        </div>
 
-        <!-- Campo Mensaje -->
-        <div>
-          <label
-            for="message"
-            class="block text-sm font-medium text-gray-300 mb-2"
-          >
-            Mensaje *
-          </label>
-          <textarea
-            id="message"
-            formControlName="message"
-            rows="6"
-            placeholder="Cuéntanos sobre tu proyecto o consulta..."
-            class="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-sky-500 transition-colors duration-300 resize-vertical backdrop-blur-sm"
-            [class.border-red-500]="message?.invalid && message?.touched"
-            [class.border-green-500]="message?.valid && message?.touched"
-          ></textarea>
-          <div
-            *ngIf="message?.invalid && message?.touched"
-            class="mt-1 text-red-400 text-sm"
-          >
-            <span *ngIf="message?.errors?.['required']"
-              >El mensaje es requerido</span
-            >
-            <span *ngIf="message?.errors?.['minlength']"
-              >El mensaje debe tener al menos 10 caracteres</span
-            >
+          <!-- Message field -->
+          <div>
+            <label class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider">
+              Message *
+            </label>
+            <textarea
+              formControlName="message"
+              rows="6"
+              placeholder="Tell us about your project..."
+              class="w-full bg-transparent border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors resize-vertical"
+              [class.border-red-500]="message?.invalid && message?.touched"
+            ></textarea>
+            <div *ngIf="message?.invalid && message?.touched" class="mt-1 text-xs font-mono text-red-400">
+              <span *ngIf="message?.errors?.['required']">Message is required</span>
+              <span *ngIf="message?.errors?.['minlength']">Message must be at least 10 characters</span>
+            </div>
           </div>
-        </div>
 
-        <!-- Botón de envío -->
-        <div class="text-center">
+          <!-- Submit button -->
           <button
             type="submit"
             [disabled]="isLoading || formSubmitted || !canSendEmail()"
-            class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-sky-600 to-sky-700 hover:from-sky-700 hover:to-sky-800 text-white font-medium text-lg rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-50 disabled:cursor-not-allowed"
+            class="w-full border-2 border-white py-3 font-mono text-sm uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <svg
-              *ngIf="!isLoading"
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 mr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-              />
-            </svg>
-            <div
-              *ngIf="isLoading"
-              class="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"
-            ></div>
-            {{
-              isLoading
-                ? "Enviando..."
-                : formSubmitted
-                ? "Mensaje Enviado"
-                : !canSendEmail()
-                ? "Límite Alcanzado"
-                : "Enviar Mensaje"
-            }}
+            <span *ngIf="!isLoading">[ SEND MESSAGE ]</span>
+            <span *ngIf="isLoading">[ SENDING... ]</span>
           </button>
-        </div>
-      </form>
+        </form>
+      </div>
 
-      <!-- Información de contacto adicional -->
-      <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        <div
-          class="info-card p-6 bg-gray-800/30 rounded-lg backdrop-blur-sm border border-gray-700"
-        >
-          <div
-            class="w-12 h-12 bg-sky-600 rounded-full flex items-center justify-center mx-auto mb-4"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-              />
-            </svg>
-          </div>
-          <h3 class="text-lg font-semibold text-white mb-2">Email</h3>
-          <p class="text-gray-400">contact.dev.cristian&#64;gmail.com</p>
+      <!-- Contact Info -->
+      <div>
+        <div class="text-xs font-mono text-white/50 mb-6 uppercase tracking-wider">
+          [ CONTACT INFO ]
         </div>
 
-        <div
-          class="info-card p-6 bg-gray-800/30 rounded-lg backdrop-blur-sm border border-gray-700"
-        >
-          <div
-            class="w-12 h-12 bg-sky-600 rounded-full flex items-center justify-center mx-auto mb-4"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+        <div class="space-y-6">
+          <div class="border border-white/20 p-6">
+            <div class="text-xs font-mono text-white/50 mb-2">[ EMAIL ]</div>
+            <p class="font-mono text-white">contact.dev.cristian&#64;gmail.com</p>
           </div>
-          <h3 class="text-lg font-semibold text-white mb-2">
-            Tiempo de respuesta
-          </h3>
-          <p class="text-gray-400">Menos de 24 horas</p>
-        </div>
 
-        <div
-          class="info-card p-6 bg-gray-800/30 rounded-lg backdrop-blur-sm border border-gray-700"
-        >
-          <div
-            class="w-12 h-12 bg-sky-600 rounded-full flex items-center justify-center mx-auto mb-4"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-white"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-              />
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
+          <div class="border border-white/20 p-6">
+            <div class="text-xs font-mono text-white/50 mb-2">[ RESPONSE TIME ]</div>
+            <p class="font-mono text-white">< 24 hours</p>
           </div>
-          <h3 class="text-lg font-semibold text-white mb-2">Ubicación</h3>
-          <p class="text-gray-400">Remoto & On-site</p>
+
+          <div class="border border-white/20 p-6">
+            <div class="text-xs font-mono text-white/50 mb-2">[ LOCATION ]</div>
+            <p class="font-mono text-white">Remote & On-site</p>
+          </div>
         </div>
       </div>
     </div>
