@@ -2,12 +2,12 @@
   <article id="technologiesSection">
     <div class="text-center mb-12">
       <h1 class="text-3xl sm:text-4xl font-mono font-bold mb-4 text-white">
-        [ TECHNOLOGIES ]
+        [ TECNOLOGÍAS ]
       </h1>
       <div class="w-24 h-0.5 bg-white mx-auto mb-6"></div>
       <p class="text-base sm:text-lg font-mono text-white/70 max-w-2xl mx-auto">
-        > Working with modern and proven technologies to ensure robust,
-        scalable and high-performance applications_
+        > Trabajamos con tecnologías modernas y probadas para garantizar
+        aplicaciones robustas, escalables y de alto rendimiento_
       </p>
     </div>
 
@@ -21,9 +21,11 @@
         <div
           *ngFor="let tech of visibleTechnologies; let i = index"
           class="tech-item text-center"
-          [ngClass]="{'fade-in': tech.animating, 'fade-out': tech.exiting}"
+          [ngClass]="{ 'fade-in': tech.animating, 'fade-out': tech.exiting }"
         >
-          <div class="w-16 h-16 border border-white/30 flex items-center justify-center mb-3 mx-auto hover:border-white/50 transition-colors">
+          <div
+            class="w-16 h-16 border border-white/30 flex items-center justify-center mb-3 mx-auto hover:border-white/50 transition-colors"
+          >
             <img
               [src]="tech.logo"
               [alt]="tech.name"
@@ -31,7 +33,9 @@
               loading="lazy"
             />
           </div>
-          <span class="text-xs font-mono text-white/60 uppercase tracking-wider">
+          <span
+            class="text-xs font-mono text-white/60 uppercase tracking-wider"
+          >
             {{ tech.name }}
           </span>
         </div>
@@ -40,7 +44,7 @@
 
     <div class="text-center mt-8">
       <p class="text-xs font-mono text-white/50 uppercase tracking-wider">
-        > And many more technologies according to your project needs_
+        > Y muchas más tecnologías de acuerdo a las necesidades de tu proyecto_
       </p>
     </div>
   </article>

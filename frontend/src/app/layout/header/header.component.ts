@@ -13,10 +13,10 @@ export class HeaderComponent {
   isSidenavOpen = false;
 
   menuItems = [
-    { label: 'Home', section: 'ctaSection' },
-    { label: 'Services', section: 'servicesSection' },
-    { label: 'About', section: 'aboutSection' },
-    { label: 'Contact', section: 'contactSection' },
+    { label: 'Inicio', section: 'ctaSection' },
+    { label: 'Servicios', section: 'servicesSection' },
+    { label: 'Nosotros', section: 'aboutSection' },
+    { label: 'Contacto', section: 'contactSection' },
   ];
 
   constructor(private viewportScroller: ViewportScroller) {}

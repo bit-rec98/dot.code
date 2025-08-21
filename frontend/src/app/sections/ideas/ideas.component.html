@@ -2,12 +2,12 @@
   <article id="ideasSection">
     <div class="text-center mb-12">
       <h1 class="text-3xl sm:text-4xl font-mono font-bold mb-4 text-white">
-        [ INNOVATIVE IDEAS ]
+        [ IDEAS INNOVADORAS ]
       </h1>
       <div class="w-24 h-0.5 bg-white mx-auto mb-6"></div>
       <p class="text-base sm:text-lg font-mono text-white/70 max-w-2xl mx-auto">
-        > Exploring creative concepts and technological solutions that could
-        transform different industries_
+        > Explorando conceptos creativos y soluciones tecnológicas que podrían
+        transformar diferentes industrias_
       </p>
     </div>
 
@@ -27,7 +27,7 @@
 
         <!-- Idea number -->
         <div class="text-xs font-mono text-white/50 mb-4">
-          [ CONCEPT_{{ (i + 1).toString().padStart(2, "0") }} ]
+          [ CONCEPTO_{{ (i + 1).toString().padStart(2, "0") }} ]
         </div>
 
         <!-- Idea title -->
@@ -44,7 +44,7 @@
 
         <!-- Tools -->
         <div class="mb-6" *ngIf="idea.tools && idea.tools.length > 0">
-          <div class="text-xs font-mono text-white/50 mb-2">[ TOOLS ]</div>
+          <div class="text-xs font-mono text-white/50 mb-2">[ HERRAMIENTAS ]</div>
           <div class="flex flex-wrap gap-2">
             <span
               *ngFor="let tool of idea.tools"
@@ -61,7 +61,7 @@
         <!-- Status indicator -->
         <div class="flex items-center text-xs font-mono text-white/50 mt-auto">
           <div class="w-1 h-1 bg-white/50 mr-2"></div>
-          <span>[ CONCEPT STAGE ]</span>
+          <span>[ ETAPA CONCEPTUAL ]</span>
         </div>
       </div>
     </div>
@@ -72,7 +72,7 @@
         class="inline-flex items-center text-xs font-mono text-white/50 uppercase tracking-wider"
       >
         <div class="w-1 h-1 bg-white/50 animate-pulse mr-2"></div>
-        <span>Ideas update automatically to show different concepts</span>
+        <span>Las ideas se actualizan automáticamente para mostrar diferentes conceptos</span>
         <div class="w-1 h-1 bg-white/50 animate-pulse ml-2"></div>
       </div>
     </div>

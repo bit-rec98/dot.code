@@ -2,11 +2,11 @@
   <article id="contactSection">
     <div class="text-center mb-12">
       <h1 class="text-3xl sm:text-4xl font-mono font-bold mb-4 text-white">
-        [ CONTACT ]
+        [ CONTACTO ]
       </h1>
       <div class="w-24 h-0.5 bg-white mx-auto mb-6"></div>
       <p class="text-base sm:text-lg font-mono text-white/70 max-w-2xl mx-auto">
-        > Have a project in mind? Contact us and let's make your digital vision a reality_
+        > ¿Tenés un proyecto en mente? Contactanos y hagamos realidad tu visión digital_
       </p>
     </div>
 
@@ -16,7 +16,7 @@
       class="mb-8 border border-white/30 p-4 bg-black/20"
     >
       <div class="flex items-center font-mono text-sm">
-        <span class="text-white/50 mr-2">[ {{ submitMessageType === 'success' ? 'SUCCESS' : 'ERROR' }} ]</span>
+        <span class="text-white/50 mr-2">[ {{ submitMessageType === 'success' ? 'ÉXITO' : 'ERROR' }} ]</span>
         <span class="text-white">{{ submitMessage }}</span>
       </div>
     </div>
@@ -25,7 +25,7 @@
       <!-- Contact Form -->
       <div>
         <div class="text-xs font-mono text-white/50 mb-6 uppercase tracking-wider">
-          [ CONTACT FORM ]
+          [ FORMULARIO DE CONTACTO ]
         </div>
 
         <form
@@ -36,18 +36,18 @@
           <!-- Name field -->
           <div>
             <label class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider">
-              Name *
+              Nombre *
             </label>
             <input
               type="text"
               formControlName="name"
-              placeholder="Enter your name"
+              placeholder="Ingresá tu nombre"
               class="w-full bg-transparent border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors"
               [class.border-red-500]="name?.invalid && name?.touched"
             />
             <div *ngIf="name?.invalid && name?.touched" class="mt-1 text-xs font-mono text-red-400">
-              <span *ngIf="name?.errors?.['required']">Name is required</span>
-              <span *ngIf="name?.errors?.['minlength']">Name must be at least 3 characters</span>
+              <span *ngIf="name?.errors?.['required']">El nombre es obligatorio</span>
+              <span *ngIf="name?.errors?.['minlength']">El nombre debe tener al menos 3 caracteres</span>
             </div>
           </div>
 
@@ -59,54 +59,54 @@
             <input
               type="email"
               formControlName="email"
-              placeholder="your@email.com"
+              placeholder="tu@email.com"
               class="w-full bg-transparent border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors"
               [class.border-red-500]="email?.invalid && email?.touched"
             />
             <div *ngIf="email?.invalid && email?.touched" class="mt-1 text-xs font-mono text-red-400">
-              <span *ngIf="email?.errors?.['required']">Email is required</span>
-              <span *ngIf="email?.errors?.['email']">Enter a valid email</span>
+              <span *ngIf="email?.errors?.['required']">El email es obligatorio</span>
+              <span *ngIf="email?.errors?.['email']">Ingresá un email válido</span>
             </div>
           </div>
 
           <!-- Subject field -->
           <div>
             <label class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider">
-              Subject *
+              Asunto *
             </label>
             <select
               formControlName="subject"
               class="w-full bg-black border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors"
               [class.border-red-500]="subject?.invalid && subject?.touched"
             >
-              <option value="" disabled>Select a topic</option>
-              <option value="desarrollo-web">Web Development</option>
-              <option value="aplicacion-movil">Mobile Application</option>
-              <option value="consultoria">IT Consulting</option>
-              <option value="mantenimiento">Maintenance</option>
-              <option value="soporte">Technical Support</option>
-              <option value="otro">Other</option>
+              <option value="" disabled>Seleccioná un tema</option>
+              <option value="desarrollo-web">Desarrollo Web</option>
+              <option value="aplicacion-movil">Aplicación Móvil</option>
+              <option value="consultoria">Consultoría IT</option>
+              <option value="mantenimiento">Mantenimiento</option>
+              <option value="soporte">Soporte Técnico</option>
+              <option value="otro">Otro</option>
             </select>
             <div *ngIf="subject?.invalid && subject?.touched" class="mt-1 text-xs font-mono text-red-400">
-              <span *ngIf="subject?.errors?.['required']">Please select a subject</span>
+              <span *ngIf="subject?.errors?.['required']">Por favor seleccioná un asunto</span>
             </div>
           </div>
 
           <!-- Message field -->
           <div>
             <label class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider">
-              Message *
+              Mensaje *
             </label>
             <textarea
               formControlName="message"
               rows="6"
-              placeholder="Tell us about your project..."
+              placeholder="Contanos sobre tu proyecto..."
               class="w-full bg-transparent border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors resize-vertical"
               [class.border-red-500]="message?.invalid && message?.touched"
             ></textarea>
             <div *ngIf="message?.invalid && message?.touched" class="mt-1 text-xs font-mono text-red-400">
-              <span *ngIf="message?.errors?.['required']">Message is required</span>
-              <span *ngIf="message?.errors?.['minlength']">Message must be at least 10 characters</span>
+              <span *ngIf="message?.errors?.['required']">El mensaje es obligatorio</span>
+              <span *ngIf="message?.errors?.['minlength']">El mensaje debe tener al menos 10 caracteres</span>
             </div>
           </div>
 
@@ -116,8 +116,8 @@
             [disabled]="isLoading || formSubmitted || !canSendEmail()"
             class="w-full border-2 border-white py-3 font-mono text-sm uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <span *ngIf="!isLoading">[ SEND MESSAGE ]</span>
-            <span *ngIf="isLoading">[ SENDING... ]</span>
+            <span *ngIf="!isLoading">[ ENVIAR MENSAJE ]</span>
+            <span *ngIf="isLoading">[ ENVIANDO... ]</span>
           </button>
         </form>
       </div>
@@ -125,7 +125,7 @@
       <!-- Contact Info -->
       <div>
         <div class="text-xs font-mono text-white/50 mb-6 uppercase tracking-wider">
-          [ CONTACT INFO ]
+          [ INFORMACIÓN DE CONTACTO ]
         </div>
 
         <div class="space-y-6">
@@ -135,13 +135,13 @@
           </div>
 
           <div class="border border-white/20 p-6">
-            <div class="text-xs font-mono text-white/50 mb-2">[ RESPONSE TIME ]</div>
-            <p class="font-mono text-white">< 24 hours</p>
+            <div class="text-xs font-mono text-white/50 mb-2">[ TIEMPO DE RESPUESTA ]</div>
+            <p class="font-mono text-white">< 24 horas</p>
           </div>
 
           <div class="border border-white/20 p-6">
-            <div class="text-xs font-mono text-white/50 mb-2">[ LOCATION ]</div>
-            <p class="font-mono text-white">Remote & On-site</p>
+            <div class="text-xs font-mono text-white/50 mb-2">[ UBICACIÓN ]</div>
+            <p class="font-mono text-white">Remoto y Presencial</p>
           </div>
         </div>
       </div>
