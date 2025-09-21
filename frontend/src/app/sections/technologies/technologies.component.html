@@ -1,53 +1,50 @@
-<section class="sm:w-1/2 lg:w-5/6 mx-auto py-8">
-  <article class="px-4 sm:px-8 lg:px-16" id="technologiesSection">
-    <h1 class="text-2xl sm:text-3xl mb-6">Tecnologías</h1>
-    <p class="text-base sm:text-lg mb-8">
-      Trabajamos con las tecnologías más modernas y probadas del mercado para
-      garantizar aplicaciones robustas, escalables y de alto rendimiento.
-    </p>
+<section class="py-16 px-4 sm:px-8 lg:px-16 max-w-7xl mx-auto">
+  <article id="technologiesSection">
+    <div class="text-center mb-12">
+      <h1 class="text-3xl sm:text-4xl font-mono font-bold mb-4 text-white">
+        [ TECNOLOGÍAS ]
+      </h1>
+      <div class="w-24 h-0.5 bg-white mx-auto mb-6"></div>
+      <p class="text-base sm:text-lg font-mono text-white/70 max-w-2xl mx-auto">
+        > Trabajamos con tecnologías modernas y probadas para garantizar
+        aplicaciones robustas, escalables y de alto rendimiento_
+      </p>
+    </div>
 
-    <!-- Carrusel de tecnologías -->
-    <div
-      class="relative overflow-hidden rounded-lg"
-      (mouseenter)="onMouseEnter()"
-      (mouseleave)="onMouseLeave()"
-    >
+    <!-- Technologies shuffle grid - Modified grid configuration for fewer items -->
+    <div class="border-t border-b border-white/20 py-12">
       <div
-        class="flex transition-transform duration-500 ease-in-out"
-        style="scroll-behavior: smooth"
-        id="techCarousel"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 max-w-4xl mx-auto"
+        (mouseenter)="pauseShuffle()"
+        (mouseleave)="resumeShuffle()"
       >
-        <!-- Mobile: 1 item por vez, Desktop: 3 items por vez -->
         <div
-          *ngFor="let tech of displayedTechnologies; let i = index"
-          class="flex-shrink-0 px-2"
-          [ngStyle]="{
-            width: itemsPerView === 1 ? '100%' : '33.333%'
-          }"
+          *ngFor="let tech of visibleTechnologies; let i = index"
+          class="tech-item text-center"
+          [ngClass]="{ 'fade-in': tech.animating, 'fade-out': tech.exiting }"
         >
           <div
-            class="technology-card bg-gray-800/50 p-4 rounded-lg text-center transition-all duration-300 hover:bg-gray-700/50 hover:transform hover:scale-105"
+            class="w-16 h-16 border border-white/30 flex items-center justify-center mb-3 mx-auto hover:border-white/50 transition-colors"
           >
-            <div
-              class="w-12 h-12 mx-auto mb-3 flex items-center justify-center"
-            >
-              <img
-                [src]="tech.logo"
-                [alt]="tech.name + ' logo'"
-                class="w-full h-full object-contain filter brightness-0 invert"
-                loading="lazy"
-              />
-            </div>
-            <h3 class="text-sm font-medium text-gray-200">{{ tech.name }}</h3>
+            <img
+              [src]="tech.logo"
+              [alt]="tech.name"
+              class="w-8 h-8 object-contain filter invert opacity-70 hover:opacity-100 transition-opacity"
+              loading="lazy"
+            />
           </div>
+          <span
+            class="text-xs font-mono text-white/60 uppercase tracking-wider"
+          >
+            {{ tech.name }}
+          </span>
         </div>
       </div>
     </div>
 
-    <!-- Mensaje adicional -->
-    <div class="mt-8 text-center">
-      <p class="text-gray-400 text-sm">
-        Y muchas más tecnologías según las necesidades de tu proyecto
+    <div class="text-center mt-8">
+      <p class="text-xs font-mono text-white/50 uppercase tracking-wider">
+        > Y muchas más tecnologías de acuerdo a las necesidades de tu proyecto_
       </p>
     </div>
   </article>

@@ -10,6 +10,13 @@ import { RouterLink } from '@angular/router';
   styleUrl: './sidenav.component.scss',
 })
 export class SidenavComponent {
+  menuItems = [
+    { label: 'Home', section: 'ctaSection' },
+    { label: 'About', section: 'aboutSection' },
+    { label: 'Services', section: 'servicesSection' },
+    { label: 'Contact', section: 'contactSection' },
+  ];
+
   @Input() isOpen = false;
   @Output() closeMenu = new EventEmitter<void>();
 

@@ -14,7 +14,7 @@ import { ServiceModel } from '../../core/models';
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, ServiceCardComponent],
+  imports: [CommonModule],
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.scss'],
 })
