@@ -57,20 +57,6 @@
       "features": ["24/7 Support", "Security Updates", "Performance"]
     },
     {
-      "title": "Inteligencia Artificial",
-      "description": "Integración de IA y Machine Learning para automatización inteligente y análisis predictivo.",
-      "icon": "assets/icons/service9.svg",
-      "bgClass": "bg-gradient-to-br from-cyan-900 to-cyan-700",
-      "features": ["TensorFlow", "OpenAI", "Computer Vision"]
-    },
-    {
-      "title": "Blockchain & Web3",
-      "description": "Desarrollo de aplicaciones descentralizadas, smart contracts y soluciones blockchain.",
-      "icon": "assets/icons/service10.svg",
-      "bgClass": "bg-gradient-to-br from-yellow-900 to-yellow-700",
-      "features": ["Ethereum", "Smart Contracts", "DApps"]
-    },
-    {
       "title": "Automatización de Procesos",
       "description": "Optimización de flujos de trabajo empresariales mediante RPA y herramientas de automatización.",
       "icon": "assets/icons/service11.svg",

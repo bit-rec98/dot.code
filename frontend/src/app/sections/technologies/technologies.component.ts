@@ -206,46 +206,51 @@ export class TechnologiesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   /**
-   * Get a technology that hasn't been shown recently
+   * Get a random set of technologies without duplicates
+   */
+  private getRandomTechnologies(count: number): TechnologyModel[] {
+    // Create a shuffled copy using Fisher-Yates algorithm for better randomization
+    const shuffled = [...this.technologies];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    // Return the first 'count' elements (guaranteed unique)
+    return shuffled.slice(0, count);
+  }
+
+  /**
+   * Get a technology that hasn't been shown recently and is not currently visible
    */
   private getNextTechnology(): TechnologyModel {
-    const availableIndices = this.technologies
-      .map((_, index) => index)
-      .filter((index) => !this.shownTechnologies.has(index));
+    // Get IDs of currently visible technologies (excluding the one being replaced)
+    const currentVisibleIds = this.visibleTechnologies.map((t) => t.id);
+    
+    // Filter out technologies that are currently visible
+    const availableTechs = this.technologies.filter(
+      (tech) => !currentVisibleIds.includes(tech.id)
+    );
 
-    // If all have been shown, pick any non-visible one
-    if (availableIndices.length === 0) {
-      const currentIds = this.visibleTechnologies.map((t) => t.id);
-      const nonVisibleTechs = this.technologies.filter(
-        (t) => !currentIds.includes(t.id)
-      );
-
-      if (nonVisibleTechs.length > 0) {
-        return nonVisibleTechs[
-          Math.floor(Math.random() * nonVisibleTechs.length)
-        ];
-      }
-
-      // Fallback: just pick a random one
+    // If no technologies available (shouldn't happen with proper data), return random
+    if (availableTechs.length === 0) {
       return this.technologies[
         Math.floor(Math.random() * this.technologies.length)
       ];
     }
 
-    // Get a random technology from available ones
-    const randomIndex =
-      availableIndices[Math.floor(Math.random() * availableIndices.length)];
-    return this.technologies[randomIndex];
-  }
+    // From available techs, prefer ones that haven't been shown yet
+    const unseenTechs = availableTechs.filter((tech) => {
+      const index = this.technologies.findIndex((t) => t.id === tech.id);
+      return !this.shownTechnologies.has(index);
+    });
 
-  /**
-   * Get a random set of technologies
-   */
-  private getRandomTechnologies(count: number): TechnologyModel[] {
-    // Copy and shuffle the technologies array
-    const shuffled = [...this.technologies].sort(() => 0.5 - Math.random());
-    // Return the first 'count' elements
-    return shuffled.slice(0, count);
+    // If we have unseen technologies, pick from those
+    if (unseenTechs.length > 0) {
+      return unseenTechs[Math.floor(Math.random() * unseenTechs.length)];
+    }
+
+    // Otherwise, pick any available (non-visible) technology
+    return availableTechs[Math.floor(Math.random() * availableTechs.length)];
   }
 
   // Methods to pause/resume shuffle on hover

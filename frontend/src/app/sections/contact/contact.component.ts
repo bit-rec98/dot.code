@@ -22,6 +22,7 @@ export class ContactComponent implements OnInit {
   isLoading = false;
   submitMessage = '';
   submitMessageType: 'success' | 'error' = 'success';
+  showDirectContact = false;
 
   constructor(private fb: FormBuilder, private emailService: EmailService) {
     this.contactForm = this.fb.group({
@@ -70,7 +71,7 @@ export class ContactComponent implements OnInit {
     const emailData: Email = this.contactForm.value;
 
     this.emailService.sendEmail(emailData).subscribe({
-      next: (response) => {
+      next: () => {
         this.handleSuccessResponse();
       },
       error: (error) => {
@@ -101,16 +102,11 @@ export class ContactComponent implements OnInit {
    */
   private handleErrorResponse(error: any): void {
     this.isLoading = false;
-
-    if (error.rateLimited) {
-      this.showMessage(error.message, 'error');
-    } else {
-      this.showMessage(
-        error.message ||
-          'Error al enviar el mensaje. Por favor intenta nuevamente.',
-        'error'
-      );
-    }
+    this.showDirectContact = !!error.showFallback;
+    this.showMessage(
+      error.message || 'No se pudo enviar el mensaje. Contactanos directamente.',
+      'error'
+    );
   }
 
   /**
@@ -143,6 +139,7 @@ export class ContactComponent implements OnInit {
     this.contactForm.reset();
     this.formSubmitted = false;
     this.submitMessage = '';
+    this.showDirectContact = false;
 
     // Reset validation states
     Object.keys(this.contactForm.controls).forEach((key) => {
