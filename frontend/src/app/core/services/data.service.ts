@@ -64,7 +64,9 @@ export class DataService {
 
   getTechnologies(): Observable<TechnologyModel[]> {
     return this.dataCache$.pipe(
-      map((data) => data?.technologies || []),
+      map((data) =>
+        (data?.technologies || []).map((tech, index) => ({ ...tech, id: index + 1 }))
+      ),
       shareReplay(1)
     );
   }
