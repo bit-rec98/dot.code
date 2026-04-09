@@ -126,42 +126,33 @@ export class EmailService {
    */
   private handleEmailError(error: any): any {
     let errorMessage =
-      'Error al enviar el email. Por favor intenta nuevamente.';
+      'No se pudo enviar el mensaje. Podés contactarnos directamente por email.';
     let rateLimited = false;
 
-    // Error 429: Rate limiting de EmailJS
     if (error.status === 429) {
       errorMessage =
-        'Demasiados intentos. Espera 30 segundos e intenta nuevamente.';
+        'Demasiados intentos. Esperá 30 segundos e intentá nuevamente.';
       rateLimited = true;
-    }
-    // Error de conexión/red
-    else if (error.name === 'NetworkError' || error.status === 0) {
+    } else if (error.name === 'NetworkError' || error.status === 0) {
       errorMessage =
-        'Error de conexión. Verifica tu internet e intenta nuevamente.';
-    }
-    // Email bloqueado
-    else if (error.text?.includes('Blocked') || error.status === 403) {
-      errorMessage = 'Tu email ha sido bloqueado temporalmente por seguridad.';
+        'Sin conexión. Verificá tu internet e intentá nuevamente.';
+    } else if (error.text?.includes('Blocked') || error.status === 403) {
+      errorMessage =
+        'El servicio bloqueó este envío. Contactanos directamente por email.';
       rateLimited = true;
-    }
-    // Datos inválidos
-    else if (error.text?.includes('Invalid') || error.status === 400) {
-      errorMessage = 'Los datos del formulario contienen información inválida.';
-    }
-    // Error del servidor
-    else if (error.status >= 500) {
-      errorMessage = 'Error del servidor. Intenta nuevamente en unos minutos.';
-    }
-    // Error de autenticación
-    else if (error.status === 401) {
-      errorMessage = 'Error de configuración del servicio de email.';
+    } else if (error.status === 400 || error.status === 401) {
+      errorMessage =
+        'El servicio de email no está disponible en este momento. Contactanos directamente.';
+    } else if (error.status >= 500) {
+      errorMessage =
+        'Error en el servidor de email. Intentá nuevamente en unos minutos.';
     }
 
     return {
       success: false,
       message: errorMessage,
       rateLimited,
+      showFallback: error.status === 400 || error.status === 401 || error.status === 403 || error.status >= 500,
       error,
     };
   }

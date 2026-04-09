@@ -4,3 +4,13 @@
 </main>
 <app-footer></app-footer>
 
+<!-- Scroll to top — mobile only -->
+<button
+  *ngIf="showScrollTop"
+  (click)="scrollToTop()"
+  class="sm:hidden fixed bottom-6 right-6 z-50 w-10 h-10 border border-white bg-black text-white font-mono text-xs flex items-center justify-center transition-opacity duration-300"
+  aria-label="Volver al inicio"
+>
+  ↑
+</button>
+

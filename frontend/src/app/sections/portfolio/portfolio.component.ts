@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectModel } from '../../core/models/project';
-import { ProjectCardComponent } from '../../components';
 
 @Component({
   selector: 'app-portfolio',

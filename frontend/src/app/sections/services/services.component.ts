@@ -8,7 +8,6 @@ import {
   HostListener,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ServiceCardComponent } from '../../components';
 import { ServiceModel } from '../../core/models';
 
 @Component({

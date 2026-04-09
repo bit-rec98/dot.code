@@ -9,7 +9,9 @@ import {
   OnChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SafeHtml } from '@angular/platform-browser';
 import { TechnologyModel } from '../../core/models/technology';
+import { LogoCacheService } from '../../core/services/logo-cache.service';
 
 // Extended model to track animation states
 interface AnimatedTechnology extends TechnologyModel {
@@ -34,11 +36,17 @@ export class TechnologiesComponent implements OnInit, OnDestroy, OnChanges {
   shuffleSpeed = 3500; // Shuffle every 3.5 seconds
   shufflePaused = false;
 
-  // Track which technologies have been shown
-  private shownTechnologies = new Set<number>();
+  // Resolved SVG markup keyed by logo URL
+  logoSvgMap = new Map<string, SafeHtml>();
+
+  // Queue of technologies not yet shown in the current cycle
+  private queue: TechnologyModel[] = [];
   private windowWidth = 0;
 
-  constructor(private cdRef: ChangeDetectorRef) {}
+  constructor(
+    private cdRef: ChangeDetectorRef,
+    private logoCache: LogoCacheService
+  ) {}
 
   ngOnInit(): void {
     this.windowWidth = window.innerWidth;
@@ -50,8 +58,18 @@ export class TechnologiesComponent implements OnInit, OnDestroy, OnChanges {
       changes['technologies'] &&
       changes['technologies'].currentValue?.length > 0
     ) {
+      this.preloadLogos();
       this.initializeShuffle();
     }
+  }
+
+  private preloadLogos(): void {
+    this.technologies.forEach((tech) => {
+      this.logoCache.getSvg(tech.logo).subscribe((svg) => {
+        this.logoSvgMap.set(tech.logo, svg);
+        this.cdRef.detectChanges();
+      });
+    });
   }
 
   ngOnDestroy(): void {
@@ -95,25 +113,19 @@ export class TechnologiesComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     this.stopShuffle();
-    this.shownTechnologies.clear();
 
     // Ensure we don't try to show more items than we have
     const count = Math.min(this.visibleCount, this.technologies.length);
 
-    // Initially populate with random technologies
-    this.visibleTechnologies = this.getRandomTechnologies(count).map(
-      (tech) => ({
-        ...tech,
-        animating: true,
-      })
-    );
+    // Shuffle all technologies and use the first `count` as initial visible set
+    const shuffled = this.fisherYates([...this.technologies]);
+    this.visibleTechnologies = shuffled.splice(0, count).map((tech) => ({
+      ...tech,
+      animating: true,
+    }));
 
-    // Mark these as shown
-    this.visibleTechnologies.forEach((tech) => {
-      this.shownTechnologies.add(
-        this.technologies.findIndex((t) => t.id === tech.id)
-      );
-    });
+    // Remaining technologies become the queue for upcoming swaps
+    this.queue = shuffled;
 
     // Start the shuffle
     this.startShuffle();
@@ -144,108 +156,60 @@ export class TechnologiesComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   /**
-   * Shuffle a random technology
+   * Swap a random visible slot with the next technology from the queue.
+   * The evicted technology is placed back at the end of the queue.
+   * When the queue is exhausted it is refilled and re-shuffled.
    */
   private shuffleTechnology(): void {
     if (this.technologies.length <= this.visibleCount) {
-      // If we have fewer technologies than visible slots, don't shuffle
       return;
     }
 
-    // Choose a random position to replace
+    // Refill queue when empty (re-shuffle to avoid repeating the previous order)
+    if (this.queue.length === 0) {
+      this.queue = this.fisherYates(
+        this.technologies.filter(
+          (t) => !this.visibleTechnologies.some((v) => v.id === t.id)
+        )
+      );
+    }
+
     const replaceIndex = Math.floor(
       Math.random() * this.visibleTechnologies.length
     );
-    const currentTech = this.visibleTechnologies[replaceIndex];
+    const evicted = this.visibleTechnologies[replaceIndex];
+    const incoming = this.queue.shift()!;
 
-    // Mark this technology as exiting
-    this.visibleTechnologies[replaceIndex] = {
-      ...currentTech,
-      exiting: true,
-      animating: false,
-    };
+    // Push evicted technology to the end of the queue
+    this.queue.push({ ...evicted, animating: undefined, exiting: undefined } as TechnologyModel);
+
+    // Trigger exit animation
+    this.visibleTechnologies[replaceIndex] = { ...evicted, exiting: true, animating: false };
     this.cdRef.detectChanges();
 
-    // After exit animation completes, replace with new technology
     setTimeout(() => {
-      // Get a technology that hasn't been shown recently
-      const newTech = this.getNextTechnology();
-
-      // Replace the technology with animation
-      this.visibleTechnologies[replaceIndex] = {
-        ...newTech,
-        animating: true,
-        exiting: false,
-      };
-
-      // Mark as shown
-      const techIndex = this.technologies.findIndex((t) => t.id === newTech.id);
-      this.shownTechnologies.add(techIndex);
-
-      // If all technologies have been shown, reset tracking
-      if (this.shownTechnologies.size >= this.technologies.length) {
-        this.shownTechnologies.clear();
-        // Keep currently visible ones in the shown set
-        this.visibleTechnologies.forEach((tech) => {
-          const idx = this.technologies.findIndex((t) => t.id === tech.id);
-          this.shownTechnologies.add(idx);
-        });
-      }
-
+      this.visibleTechnologies[replaceIndex] = { ...incoming, animating: true, exiting: false };
       this.cdRef.detectChanges();
 
-      // Remove animation classes after they complete
       setTimeout(() => {
         this.visibleTechnologies[replaceIndex] = {
           ...this.visibleTechnologies[replaceIndex],
           animating: false,
         };
         this.cdRef.detectChanges();
-      }, 500); // Match with CSS animation duration
-    }, 500); // Match with CSS animation duration
+      }, 500);
+    }, 500);
   }
 
   /**
-   * Get a technology that hasn't been shown recently
+   * Fisher-Yates in-place shuffle, returns the same array.
    */
-  private getNextTechnology(): TechnologyModel {
-    const availableIndices = this.technologies
-      .map((_, index) => index)
-      .filter((index) => !this.shownTechnologies.has(index));
-
-    // If all have been shown, pick any non-visible one
-    if (availableIndices.length === 0) {
-      const currentIds = this.visibleTechnologies.map((t) => t.id);
-      const nonVisibleTechs = this.technologies.filter(
-        (t) => !currentIds.includes(t.id)
-      );
-
-      if (nonVisibleTechs.length > 0) {
-        return nonVisibleTechs[
-          Math.floor(Math.random() * nonVisibleTechs.length)
-        ];
-      }
-
-      // Fallback: just pick a random one
-      return this.technologies[
-        Math.floor(Math.random() * this.technologies.length)
-      ];
+  private fisherYates<T>(arr: T[]): T[] {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
     }
-
-    // Get a random technology from available ones
-    const randomIndex =
-      availableIndices[Math.floor(Math.random() * availableIndices.length)];
-    return this.technologies[randomIndex];
-  }
-
-  /**
-   * Get a random set of technologies
-   */
-  private getRandomTechnologies(count: number): TechnologyModel[] {
-    // Copy and shuffle the technologies array
-    const shuffled = [...this.technologies].sort(() => 0.5 - Math.random());
-    // Return the first 'count' elements
-    return shuffled.slice(0, count);
+    return arr;
   }
 
   // Methods to pause/resume shuffle on hover
