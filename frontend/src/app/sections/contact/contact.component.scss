@@ -3,6 +3,19 @@
   backdrop-filter: blur(10px);
 }
 
+// Honeypot: visually hidden from humans, still present in DOM for bots
+.honeypot-field {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  tab-index: -1;
+}
+
 // Animaciones simplificadas para los campos del formulario
 input,
 textarea,

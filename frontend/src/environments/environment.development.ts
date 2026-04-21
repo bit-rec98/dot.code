@@ -3,8 +3,8 @@ export const environment = {
   appName: 'dot.code [DEV]',
   version: '1.0.0-dev',
   emailjs: {
-    serviceId: 'dot-code',
-    templateId: 'dot-code-contact',
+    serviceId: 'service_dotcode',
+    templateId: 'template_dotcode',
     publicKey: 'qvzfwJpr5Dg64dz6u',
   },
 };

@@ -6,6 +6,8 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   HostListener,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProjectModel } from '../../core/models/project';
@@ -19,17 +21,18 @@ import { ProjectModel } from '../../core/models/project';
 })
 export class PortfolioComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() projects: ProjectModel[] = [];
+  @Output() scrollToContact = new EventEmitter<void>();
   private windowWidth = 0;
 
-  constructor(private cdRef: ChangeDetectorRef) {}
+  constructor(private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.windowWidth = window.innerWidth;
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   @HostListener('window:resize')
   onWindowResize(): void {
@@ -61,5 +64,9 @@ export class PortfolioComponent implements OnInit, OnDestroy, AfterViewInit {
       left: -carousel.clientWidth,
       behavior: 'smooth',
     });
+  }
+
+  onContactClick(): void {
+    this.scrollToContact.emit();
   }
 }
