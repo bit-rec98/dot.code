@@ -9,13 +9,13 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { ServiceModel } from '../../core/models';
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.scss'],
 })

@@ -13,40 +13,38 @@
 
     <!-- FAQ Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div
-        *ngFor="let faq of displayedFAQs; let i = index"
-        class="border border-white/20 p-6 hover:border-white/40 transition-all duration-300 group"
-      >
-        <!-- FAQ number and category -->
-        <div class="flex items-center justify-between mb-4">
-          <span class="text-xs font-mono text-white/50">
-            [ {{ (i + 1).toString().padStart(2, "0") }} ]
-          </span>
-          <span
-            class="text-xs font-mono text-white/50 uppercase tracking-wider"
+      @for (faq of displayedFAQs; track faq; let i = $index) {
+        <div
+          class="border border-white/20 p-6 hover:border-white/40 transition-all duration-300 group"
           >
-            {{ faq.category }}
-          </span>
+          <!-- FAQ number and category -->
+          <div class="flex items-center justify-between mb-4">
+            <span class="text-xs font-mono text-white/50">
+              [ {{ (i + 1).toString().padStart(2, "0") }} ]
+            </span>
+            <span
+              class="text-xs font-mono text-white/50 uppercase tracking-wider"
+              >
+              {{ faq.category }}
+            </span>
+          </div>
+          <!-- Question -->
+          <h3 class="text-lg font-mono font-bold text-white mb-4 leading-tight">
+            {{ faq.question }}
+          </h3>
+          <!-- Answer -->
+          <p class="text-sm font-mono text-white/70 leading-relaxed mb-6">
+            {{ faq.answer }}
+          </p>
+          <!-- Contact action -->
+          <button
+            (click)="onContactClick()"
+            class="text-xs font-mono text-white/60 hover:text-white transition-colors uppercase tracking-wider"
+            >
+            [ ¿NECESITÁS MÁS INFO? ]
+          </button>
         </div>
-
-        <!-- Question -->
-        <h3 class="text-lg font-mono font-bold text-white mb-4 leading-tight">
-          {{ faq.question }}
-        </h3>
-
-        <!-- Answer -->
-        <p class="text-sm font-mono text-white/70 leading-relaxed mb-6">
-          {{ faq.answer }}
-        </p>
-
-        <!-- Contact action -->
-        <button
-          (click)="onContactClick()"
-          class="text-xs font-mono text-white/60 hover:text-white transition-colors uppercase tracking-wider"
-        >
-          [ ¿NECESITÁS MÁS INFO? ]
-        </button>
-      </div>
+      }
     </div>
   </article>
 </section>
