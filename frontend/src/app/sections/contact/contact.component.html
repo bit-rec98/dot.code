@@ -12,229 +12,265 @@
     </div>
 
     <!-- Status Messages -->
-    <div
-      *ngIf="submitMessage"
-      class="mb-8 border border-white/30 p-4 bg-black/20"
-    >
-      <div class="font-mono text-sm">
-        <div class="flex items-start gap-2">
-          <span class="text-white/50 shrink-0"
-            >[ {{ submitMessageType === "success" ? "ÉXITO" : "ERROR" }} ]</span
-          >
-          <span class="text-white">{{ submitMessage }}</span>
-        </div>
-        <div *ngIf="showDirectContact" class="mt-3 pl-0">
-          <a
-            href="mailto:contact.dev.cristian@gmail.com"
-            class="text-white underline underline-offset-4 hover:text-white/70 transition-colors"
-          >
-            &gt; contact.dev.cristian&#64;gmail.com
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      <!-- Contact Form -->
-      <div>
-        <div
-          class="text-xs font-mono text-white/50 mb-6 uppercase tracking-wider"
+    @if (submitMessage) {
+      <div
+        class="mb-8 border border-white/30 p-4 bg-black/20"
         >
-          [ FORMULARIO DE CONTACTO ]
-        </div>
-
-        <form
-          [formGroup]="contactForm"
-          (ngSubmit)="onSubmit()"
-          class="space-y-6"
-        >
-          <!-- Name field -->
-          <div>
-            <label
-              class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider"
-            >
-              Nombre *
-            </label>
-            <input
-              type="text"
-              formControlName="name"
-              placeholder="Ingresá tu nombre"
-              class="w-full bg-transparent border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors"
-              [class.border-red-500]="name?.invalid && name?.touched"
-            />
-            <div
-              *ngIf="name?.invalid && name?.touched"
-              class="mt-1 text-xs font-mono text-red-400"
-            >
-              <span *ngIf="name?.errors?.['required']"
-                >El nombre es obligatorio</span
+        <div class="font-mono text-sm">
+          <div class="flex items-start gap-2">
+            <span class="text-white/50 shrink-0"
+              >[ {{ submitMessageType === "success" ? "ÉXITO" : "ERROR" }} ]</span
               >
-              <span *ngIf="name?.errors?.['whitespace']"
-                >El nombre no puede contener solo espacios</span
-              >
-              <span *ngIf="name?.errors?.['minlength']"
-                >El nombre debe tener al menos 3 caracteres</span
-              >
-              <span *ngIf="name?.errors?.['maxlength']"
-                >El nombre no puede superar los 100 caracteres</span
-              >
+              <span class="text-white">{{ submitMessage }}</span>
             </div>
-          </div>
-
-          <!-- Email field -->
-          <div>
-            <label
-              class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider"
-            >
-              Email *
-            </label>
-            <input
-              type="email"
-              formControlName="email"
-              placeholder="tu@email.com"
-              class="w-full bg-transparent border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors"
-              [class.border-red-500]="email?.invalid && email?.touched"
-            />
-            <div
-              *ngIf="email?.invalid && email?.touched"
-              class="mt-1 text-xs font-mono text-red-400"
-            >
-              <span *ngIf="email?.errors?.['required']"
-                >El email es obligatorio</span
-              >
-              <span *ngIf="email?.errors?.['email']"
-                >Ingresá un email válido</span
-              >
-            </div>
-          </div>
-
-          <!-- Subject field -->
-          <div>
-            <label
-              class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider"
-            >
-              Asunto *
-            </label>
-            <select
-              formControlName="subject"
-              class="w-full bg-black border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors"
-              [class.border-red-500]="subject?.invalid && subject?.touched"
-            >
-              <option value="" disabled>Seleccioná un tema</option>
-              <option value="desarrollo-web">Desarrollo Web</option>
-              <option value="aplicacion-movil">Aplicación Móvil</option>
-              <option value="consultoria">Consultoría IT</option>
-              <option value="mantenimiento">Mantenimiento</option>
-              <option value="soporte">Soporte Técnico</option>
-              <option value="otro">Otro</option>
-            </select>
-            <div
-              *ngIf="subject?.invalid && subject?.touched"
-              class="mt-1 text-xs font-mono text-red-400"
-            >
-              <span *ngIf="subject?.errors?.['required']"
-                >Por favor seleccioná un asunto</span
-              >
-            </div>
-          </div>
-
-          <!-- Message field -->
-          <div>
-            <label
-              class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider"
-            >
-              Mensaje *
-            </label>
-            <textarea
-              formControlName="message"
-              rows="6"
-              placeholder="Contanos sobre tu proyecto..."
-              class="w-full bg-transparent border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors resize-vertical"
-              [class.border-red-500]="message?.invalid && message?.touched"
-            ></textarea>
-            <div
-              *ngIf="message?.invalid && message?.touched"
-              class="mt-1 text-xs font-mono text-red-400"
-            >
-              <span *ngIf="message?.errors?.['required']"
-                >El mensaje es obligatorio</span
-              >
-              <span *ngIf="message?.errors?.['whitespace']"
-                >El mensaje no puede contener solo espacios</span
-              >
-              <span *ngIf="message?.errors?.['minlength']"
-                >El mensaje debe tener al menos 10 caracteres</span
-              >
-              <span *ngIf="message?.errors?.['maxlength']"
-                >El mensaje no puede superar los 2000 caracteres</span
-              >
-            </div>
-          </div>
-
-          <!-- Honeypot anti-spam field (visually hidden) -->
-          <div class="honeypot-field" aria-hidden="true">
-            <label for="website">Website</label>
-            <input
-              type="text"
-              id="website"
-              formControlName="_hp"
-              tabindex="-1"
-              autocomplete="off"
-            />
-          </div>
-
-          <!-- Submit button -->
-          <div>
-            <button
-              type="submit"
-              [disabled]="isSubmitDisabled"
-              class="w-full border-2 border-white py-3 font-mono text-sm uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <span *ngIf="isLoading">[ ENVIANDO... ]</span>
-              <span *ngIf="!isLoading && cooldownSeconds > 0">[ ESPERAR {{ cooldownSeconds }}s ]</span>
-              <span *ngIf="!isLoading && cooldownSeconds === 0">[ ENVIAR MENSAJE ]</span>
-            </button>
-            <div
-              *ngIf="getEmailStats().todayCount > 0"
-              class="mt-2 text-xs font-mono text-white/40 text-right"
-            >
-              {{ getEmailStats().remainingToday }} / {{ getEmailStats().maxDaily }} envíos disponibles hoy
-            </div>
-          </div>
-        </form>
-      </div>
-
-      <!-- Contact Info -->
-      <div>
-        <div
-          class="text-xs font-mono text-white/50 mb-6 uppercase tracking-wider"
-        >
-          [ INFORMACIÓN DE CONTACTO ]
-        </div>
-
-        <div class="space-y-6">
-          <div class="border border-white/20 p-6">
-            <div class="text-xs font-mono text-white/50 mb-2">[ EMAIL ]</div>
-            <p class="font-mono text-white">
-              contact.dev.cristian&#64;gmail.com
-            </p>
-          </div>
-
-          <div class="border border-white/20 p-6">
-            <div class="text-xs font-mono text-white/50 mb-2">
-              [ TIEMPO DE RESPUESTA ]
-            </div>
-            <p class="font-mono text-white">< 24 horas</p>
-          </div>
-
-          <div class="border border-white/20 p-6">
-            <div class="text-xs font-mono text-white/50 mb-2">
-              [ UBICACIÓN ]
-            </div>
-            <p class="font-mono text-white">Córdoba, Argentina</p>
+            @if (showDirectContact) {
+              <div class="mt-3 pl-0">
+                <a
+                  href="mailto:contact.dev.cristian@gmail.com"
+                  class="text-white underline underline-offset-4 hover:text-white/70 transition-colors"
+                  >
+                  &gt; contact.dev.cristian&#64;gmail.com
+                </a>
+              </div>
+            }
           </div>
         </div>
-      </div>
-    </div>
-  </article>
-</section>
+      }
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Contact Form -->
+        <div>
+          <div
+            class="text-xs font-mono text-white/50 mb-6 uppercase tracking-wider"
+            >
+            [ FORMULARIO DE CONTACTO ]
+          </div>
+
+          <form
+            [formGroup]="contactForm"
+            (ngSubmit)="onSubmit()"
+            class="space-y-6"
+            >
+            <!-- Name field -->
+            <div>
+              <label
+                class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider"
+                >
+                Nombre *
+              </label>
+              <input
+                type="text"
+                formControlName="name"
+                placeholder="Ingresá tu nombre"
+                class="w-full bg-transparent border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors"
+                [class.border-red-500]="name?.invalid && name?.touched"
+                />
+              @if (name?.invalid && name?.touched) {
+                <div
+                  class="mt-1 text-xs font-mono text-red-400"
+                  >
+                  @if (name?.errors?.['required']) {
+                    <span
+                      >El nombre es obligatorio</span
+                      >
+                    }
+                    @if (name?.errors?.['whitespace']) {
+                      <span
+                        >El nombre no puede contener solo espacios</span
+                        >
+                      }
+                      @if (name?.errors?.['minlength']) {
+                        <span
+                          >El nombre debe tener al menos 3 caracteres</span
+                          >
+                        }
+                        @if (name?.errors?.['maxlength']) {
+                          <span
+                            >El nombre no puede superar los 100 caracteres</span
+                            >
+                          }
+                        </div>
+                      }
+                    </div>
+
+                    <!-- Email field -->
+                    <div>
+                      <label
+                        class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider"
+                        >
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        formControlName="email"
+                        placeholder="tu@email.com"
+                        class="w-full bg-transparent border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors"
+                        [class.border-red-500]="email?.invalid && email?.touched"
+                        />
+                      @if (email?.invalid && email?.touched) {
+                        <div
+                          class="mt-1 text-xs font-mono text-red-400"
+                          >
+                          @if (email?.errors?.['required']) {
+                            <span
+                              >El email es obligatorio</span
+                              >
+                            }
+                            @if (email?.errors?.['email']) {
+                              <span
+                                >Ingresá un email válido</span
+                                >
+                              }
+                            </div>
+                          }
+                        </div>
+
+                        <!-- Subject field -->
+                        <div>
+                          <label
+                            class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider"
+                            >
+                            Asunto *
+                          </label>
+                          <select
+                            formControlName="subject"
+                            class="w-full bg-black border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors"
+                            [class.border-red-500]="subject?.invalid && subject?.touched"
+                            >
+                            <option value="" disabled>Seleccioná un tema</option>
+                            <option value="desarrollo-web">Desarrollo Web</option>
+                            <option value="aplicacion-movil">Aplicación Móvil</option>
+                            <option value="consultoria">Consultoría IT</option>
+                            <option value="mantenimiento">Mantenimiento</option>
+                            <option value="soporte">Soporte Técnico</option>
+                            <option value="otro">Otro</option>
+                          </select>
+                          @if (subject?.invalid && subject?.touched) {
+                            <div
+                              class="mt-1 text-xs font-mono text-red-400"
+                              >
+                              @if (subject?.errors?.['required']) {
+                                <span
+                                  >Por favor seleccioná un asunto</span
+                                  >
+                                }
+                              </div>
+                            }
+                          </div>
+
+                          <!-- Message field -->
+                          <div>
+                            <label
+                              class="block text-xs font-mono text-white/70 mb-2 uppercase tracking-wider"
+                              >
+                              Mensaje *
+                            </label>
+                            <textarea
+                              formControlName="message"
+                              rows="6"
+                              placeholder="Contanos sobre tu proyecto..."
+                              class="w-full bg-transparent border border-white/30 p-3 text-white font-mono text-sm focus:border-white focus:outline-none transition-colors resize-vertical"
+                              [class.border-red-500]="message?.invalid && message?.touched"
+                            ></textarea>
+                            @if (message?.invalid && message?.touched) {
+                              <div
+                                class="mt-1 text-xs font-mono text-red-400"
+                                >
+                                @if (message?.errors?.['required']) {
+                                  <span
+                                    >El mensaje es obligatorio</span
+                                    >
+                                  }
+                                  @if (message?.errors?.['whitespace']) {
+                                    <span
+                                      >El mensaje no puede contener solo espacios</span
+                                      >
+                                    }
+                                    @if (message?.errors?.['minlength']) {
+                                      <span
+                                        >El mensaje debe tener al menos 10 caracteres</span
+                                        >
+                                      }
+                                      @if (message?.errors?.['maxlength']) {
+                                        <span
+                                          >El mensaje no puede superar los 2000 caracteres</span
+                                          >
+                                        }
+                                      </div>
+                                    }
+                                  </div>
+
+                                  <!-- Honeypot anti-spam field (visually hidden) -->
+                                  <div class="honeypot-field" aria-hidden="true">
+                                    <label for="website">Website</label>
+                                    <input
+                                      type="text"
+                                      id="website"
+                                      formControlName="_hp"
+                                      tabindex="-1"
+                                      autocomplete="off"
+                                      />
+                                  </div>
+
+                                  <!-- Submit button -->
+                                  <div>
+                                    <button
+                                      type="submit"
+                                      [disabled]="isSubmitDisabled"
+                                      class="w-full border-2 border-white py-3 font-mono text-sm uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                      >
+                                      @if (isLoading) {
+                                        <span>[ ENVIANDO... ]</span>
+                                      }
+                                      @if (!isLoading && cooldownSeconds > 0) {
+                                        <span>[ ESPERAR {{ cooldownSeconds }}s ]</span>
+                                      }
+                                      @if (!isLoading && cooldownSeconds === 0) {
+                                        <span>[ ENVIAR MENSAJE ]</span>
+                                      }
+                                    </button>
+                                    @if (getEmailStats().todayCount > 0) {
+                                      <div
+                                        class="mt-2 text-xs font-mono text-white/40 text-right"
+                                        >
+                                        {{ getEmailStats().remainingToday }} / {{ getEmailStats().maxDaily }} envíos disponibles hoy
+                                      </div>
+                                    }
+                                  </div>
+                                </form>
+                              </div>
+
+                              <!-- Contact Info -->
+                              <div>
+                                <div
+                                  class="text-xs font-mono text-white/50 mb-6 uppercase tracking-wider"
+                                  >
+                                  [ INFORMACIÓN DE CONTACTO ]
+                                </div>
+
+                                <div class="space-y-6">
+                                  <div class="border border-white/20 p-6">
+                                    <div class="text-xs font-mono text-white/50 mb-2">[ EMAIL ]</div>
+                                    <p class="font-mono text-white">
+                                      contact.dev.cristian&#64;gmail.com
+                                    </p>
+                                  </div>
+
+                                  <div class="border border-white/20 p-6">
+                                    <div class="text-xs font-mono text-white/50 mb-2">
+                                      [ TIEMPO DE RESPUESTA ]
+                                    </div>
+                                    <p class="font-mono text-white">< 24 horas</p>
+                                  </div>
+
+                                  <div class="border border-white/20 p-6">
+                                    <div class="text-xs font-mono text-white/50 mb-2">
+                                      [ UBICACIÓN ]
+                                    </div>
+                                    <p class="font-mono text-white">Córdoba, Argentina</p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </article>
+                        </section>

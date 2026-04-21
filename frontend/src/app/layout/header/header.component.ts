@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { SidenavComponent } from '../../components/sidenav/sidenav.component';
-import { CommonModule, ViewportScroller } from '@angular/common';
+import { ViewportScroller } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, SidenavComponent],
+  imports: [SidenavComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })

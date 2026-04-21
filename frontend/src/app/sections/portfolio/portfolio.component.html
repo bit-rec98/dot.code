@@ -13,63 +13,61 @@
 
     <!-- Projects Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div
-        *ngFor="let project of projects; let i = index"
-        class="border border-white/20 overflow-hidden hover:border-white/40 transition-all duration-300 group flex flex-col min-h-[400px]"
-      >
-        <!-- Project header -->
-        <div class="border-b border-white/20 p-4 bg-black/20">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono text-white/50">
-              [ PROYECTO_{{ (i + 1).toString().padStart(2, "0") }} ]
-            </span>
-            <div class="w-2 h-2 bg-white/50"></div>
-          </div>
-        </div>
-
-        <!-- Project content -->
-        <div class="p-6 flex flex-col flex-grow">
-          <h3
-            class="text-lg font-mono font-bold text-white mb-3 uppercase tracking-wider"
+      @for (project of projects; track project; let i = $index) {
+        <div
+          class="border border-white/20 overflow-hidden hover:border-white/40 transition-all duration-300 group flex flex-col min-h-[400px]"
           >
-            {{ project.title }}
-          </h3>
-
-          <p class="text-sm font-mono text-white/70 mb-4 leading-relaxed">
-            {{ project.description }}
-          </p>
-
-          <!-- Technologies -->
-          <div
-            class="mb-6"
-            *ngIf="project.technologies && project.technologies.length > 0"
-          >
-            <div class="text-xs font-mono text-white/50 mb-2">
-              [ TECNOLOGÍAS ]
-            </div>
-            <div class="flex flex-wrap gap-2">
-              <span
-                *ngFor="let tech of project.technologies"
-                class="text-xs font-mono border border-white/30 text-white/80 px-2 py-1"
-              >
-                {{ tech }}
+          <!-- Project header -->
+          <div class="border-b border-white/20 p-4 bg-black/20">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono text-white/50">
+                [ PROYECTO_{{ (i + 1).toString().padStart(2, "0") }} ]
               </span>
+              <div class="w-2 h-2 bg-white/50"></div>
             </div>
           </div>
-
-          <!-- Spacer to push button to bottom -->
-          <div class="flex-grow"></div>
-
-          <!-- Visit button -->
-          <button
-            [disabled]="!project.url"
-            class="w-full border border-white/30 py-2 font-mono text-sm uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-auto"
-            (click)="onContactClick()"
-          >
-            [ CONSULTAR ]
-          </button>
+          <!-- Project content -->
+          <div class="p-6 flex flex-col flex-grow">
+            <h3
+              class="text-lg font-mono font-bold text-white mb-3 uppercase tracking-wider"
+              >
+              {{ project.title }}
+            </h3>
+            <p class="text-sm font-mono text-white/70 mb-4 leading-relaxed">
+              {{ project.description }}
+            </p>
+            <!-- Technologies -->
+            @if (project.technologies && project.technologies.length > 0) {
+              <div
+                class="mb-6"
+                >
+                <div class="text-xs font-mono text-white/50 mb-2">
+                  [ TECNOLOGÍAS ]
+                </div>
+                <div class="flex flex-wrap gap-2">
+                  @for (tech of project.technologies; track tech) {
+                    <span
+                      class="text-xs font-mono border border-white/30 text-white/80 px-2 py-1"
+                      >
+                      {{ tech }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+            <!-- Spacer to push button to bottom -->
+            <div class="flex-grow"></div>
+            <!-- Visit button -->
+            <button
+              [disabled]="!project.url"
+              class="w-full border border-white/30 py-2 font-mono text-sm uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-auto"
+              (click)="onContactClick()"
+              >
+              [ CONSULTAR ]
+            </button>
+          </div>
         </div>
-      </div>
+      }
     </div>
   </article>
 </section>
