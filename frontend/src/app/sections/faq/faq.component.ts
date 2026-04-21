@@ -10,13 +10,13 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FAQModel } from '../../core/models/faq';
 
 @Component({
   selector: 'app-faq',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './faq.component.html',
   styleUrls: ['./faq.component.scss'],
 })

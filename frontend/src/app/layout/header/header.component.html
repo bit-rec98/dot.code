@@ -2,53 +2,55 @@
   id="header"
   class="fixed top-0 left-0 w-full border-b border-white/20 backdrop-blur-sm z-50"
   style="background-color: rgba(51, 51, 51, 0.95)"
->
+  >
   <nav class="flex flex-row items-center justify-between p-4 max-w-7xl mx-auto">
     <a
       (click)="scrollToSection('ctaSection')"
       class="text-xl font-mono font-bold text-white hover:text-white/80 transition-colors cursor-pointer"
       >[ DOT.CODE ]</a
-    >
-
-    <!-- Menú de Escritorio -->
-    <ul class="hidden md:flex flex-row items-center gap-8">
-      <li *ngFor="let item of menuItems">
-        <a
-          (click)="scrollToSection(item.section)"
-          class="text-sm font-mono uppercase tracking-wider text-white/70 hover:text-white transition-colors cursor-pointer relative group pb-2"
-        >
-          {{ item.label }}
-          <span
-            class="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"
-          ></span>
-        </a>
-      </li>
-    </ul>
-
-    <!-- Botón de Menú Móvil -->
-    <button
-      (click)="toggleSidenav()"
-      class="md:hidden p-2 text-white hover:text-white/80 transition-colors"
-      aria-label="Alternar menú"
-    >
-      <svg
-        class="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
       >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M4 6h16M4 12h16M4 18h16"
-        />
-      </svg>
-    </button>
-  </nav>
-</header>
 
-<app-sidenav
-  [isOpen]="isSidenavOpen"
-  (closeMenu)="closeSidenav()"
-></app-sidenav>
+      <!-- Menú de Escritorio -->
+      <ul class="hidden md:flex flex-row items-center gap-8">
+        @for (item of menuItems; track item) {
+          <li>
+            <a
+              (click)="scrollToSection(item.section)"
+              class="text-sm font-mono uppercase tracking-wider text-white/70 hover:text-white transition-colors cursor-pointer relative group pb-2"
+              >
+              {{ item.label }}
+              <span
+                class="absolute bottom-0 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"
+              ></span>
+            </a>
+          </li>
+        }
+      </ul>
+
+      <!-- Botón de Menú Móvil -->
+      <button
+        (click)="toggleSidenav()"
+        class="md:hidden p-2 text-white hover:text-white/80 transition-colors"
+        aria-label="Alternar menú"
+        >
+        <svg
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"
+            />
+        </svg>
+      </button>
+    </nav>
+  </header>
+
+  <app-sidenav
+    [isOpen]="isSidenavOpen"
+    (closeMenu)="closeSidenav()"
+  ></app-sidenav>
