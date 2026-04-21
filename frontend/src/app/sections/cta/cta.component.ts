@@ -9,9 +9,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './cta.component.scss',
 })
 export class CtaComponent {
-  @Output() contactClick = new EventEmitter<void>();
+  @Output() scrollToContact = new EventEmitter<void>();
 
   onContactClick(): void {
-    this.contactClick.emit();
+    this.scrollToContact.emit();
   }
 }

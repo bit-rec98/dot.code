@@ -12,6 +12,7 @@ interface RateLimitStatus {
   canSend: boolean;
   todayCount: number;
   maxDaily: number;
+  cooldownRemaining: number;
   message?: string;
 }
 
@@ -26,6 +27,10 @@ export class EmailService {
   // Configuración de rate limiting local
   private readonly DAILY_LIMIT = 3;
   private readonly STORAGE_KEY = 'email_attempts';
+  private readonly LAST_SENT_KEY = 'email_last_sent';
+  private readonly COOLDOWN_MS = 60_000; // 60 s between sends
+  private readonly MAX_FIELD_LENGTH = 2000;
+  private readonly HTML_TAG_REGEX = /<[^>]*>/g;
 
   constructor() {
     this.validateConfiguration();
@@ -68,11 +73,12 @@ export class EmailService {
       }));
     }
 
+    const sanitized = this.sanitizeEmailData(emailData);
     const templateParams = {
-      from_name: emailData.name,
-      from_email: emailData.email,
-      subject: emailData.subject,
-      message: emailData.message,
+      from_name: sanitized.name,
+      from_email: sanitized.email,
+      subject: sanitized.subject,
+      message: sanitized.message,
       to_name: 'Equipo dot.code',
       // Metadata adicional
       timestamp: new Date().toISOString(),
@@ -110,7 +116,20 @@ export class EmailService {
         canSend: false,
         todayCount,
         maxDaily: this.DAILY_LIMIT,
+        cooldownRemaining: 0,
         message: `Has alcanzado el límite diario de ${this.DAILY_LIMIT} emails. Intenta mañana.`,
+      };
+    }
+
+    const cooldownRemaining = this.getCooldownRemaining();
+    if (cooldownRemaining > 0) {
+      const secondsLeft = Math.ceil(cooldownRemaining / 1000);
+      return {
+        canSend: false,
+        todayCount,
+        maxDaily: this.DAILY_LIMIT,
+        cooldownRemaining,
+        message: `Esperá ${secondsLeft} segundo${secondsLeft !== 1 ? 's' : ''} antes de enviar otro mensaje.`,
       };
     }
 
@@ -118,7 +137,41 @@ export class EmailService {
       canSend: true,
       todayCount,
       maxDaily: this.DAILY_LIMIT,
+      cooldownRemaining: 0,
     };
+  }
+
+  /**
+   * Devuelve los milisegundos restantes del cooldown entre envíos
+   */
+  public getCooldownRemaining(): number {
+    try {
+      const lastSent = localStorage.getItem(this.LAST_SENT_KEY);
+      if (!lastSent) return 0;
+      const elapsed = Date.now() - parseInt(lastSent, 10);
+      return Math.max(0, this.COOLDOWN_MS - elapsed);
+    } catch {
+      return 0;
+    }
+  }
+
+  /**
+   * Sanitiza los datos del email eliminando tags HTML y truncando
+   */
+  private sanitizeEmailData(emailData: Email): Email {
+    return {
+      name: this.sanitizeInput(emailData.name),
+      email: this.sanitizeInput(emailData.email),
+      subject: this.sanitizeInput(emailData.subject),
+      message: this.sanitizeInput(emailData.message),
+    };
+  }
+
+  private sanitizeInput(input: string): string {
+    return input
+      .replace(this.HTML_TAG_REGEX, '')
+      .trim()
+      .slice(0, this.MAX_FIELD_LENGTH);
   }
 
   /**
@@ -167,6 +220,15 @@ export class EmailService {
     attempts[today] = (attempts[today] || 0) + 1;
     this.cleanOldAttempts(attempts);
     this.saveAttempts(attempts);
+    this.saveLastSentTimestamp();
+  }
+
+  private saveLastSentTimestamp(): void {
+    try {
+      localStorage.setItem(this.LAST_SENT_KEY, Date.now().toString());
+    } catch (error) {
+      console.warn('Error al guardar timestamp en localStorage:', error);
+    }
   }
 
   /**
@@ -244,5 +306,6 @@ export class EmailService {
    */
   public clearRateLimit(): void {
     localStorage.removeItem(this.STORAGE_KEY);
+    localStorage.removeItem(this.LAST_SENT_KEY);
   }
 }

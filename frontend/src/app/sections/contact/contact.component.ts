@@ -1,13 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
   FormBuilder,
   FormGroup,
   Validators,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { EmailService } from '../../core/services/email.service';
 import { Email } from '../../core/services/models/email';
+
+function noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
+  const value = control.value as string;
+  if (!value) return null;
+  return value.trim().length === 0 ? { whitespace: true } : null;
+}
 
 @Component({
   selector: 'app-contact',
@@ -16,24 +24,37 @@ import { Email } from '../../core/services/models/email';
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
 })
-export class ContactComponent implements OnInit {
+export class ContactComponent implements OnInit, OnDestroy {
   contactForm: FormGroup;
   formSubmitted = false;
   isLoading = false;
   submitMessage = '';
   submitMessageType: 'success' | 'error' = 'success';
   showDirectContact = false;
+  cooldownSeconds = 0;
+
+  private cooldownInterval?: ReturnType<typeof setInterval>;
+  private messageTimeout?: ReturnType<typeof setTimeout>;
+  private resetTimeout?: ReturnType<typeof setTimeout>;
 
   constructor(private fb: FormBuilder, private emailService: EmailService) {
     this.contactForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]],
+      name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100), noWhitespaceValidator]],
+      email: ['', [Validators.required, Validators.email, Validators.maxLength(254)]],
       subject: ['', [Validators.required]],
-      message: ['', [Validators.required, Validators.minLength(10)]],
+      message: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(2000), noWhitespaceValidator]],
+      // Honeypot: bots fill this, humans don't see it
+      _hp: [''],
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.startCooldownTimer();
+  }
+
+  ngOnDestroy(): void {
+    this.clearTimers();
+  }
 
   // Getters para acceso fácil a los form fields
   get name() {
@@ -49,26 +70,56 @@ export class ContactComponent implements OnInit {
     return this.contactForm.get('message');
   }
 
+  get isSubmitDisabled(): boolean {
+    return this.isLoading || this.formSubmitted || this.cooldownSeconds > 0;
+  }
+
+  private startCooldownTimer(): void {
+    if (this.cooldownInterval) {
+      clearInterval(this.cooldownInterval);
+    }
+    const remaining = this.emailService.getCooldownRemaining();
+    if (remaining <= 0) return;
+
+    this.cooldownSeconds = Math.ceil(remaining / 1000);
+    this.cooldownInterval = setInterval(() => {
+      this.cooldownSeconds = Math.max(0, this.cooldownSeconds - 1);
+      if (this.cooldownSeconds === 0) {
+        clearInterval(this.cooldownInterval);
+      }
+    }, 1000);
+  }
+
   onSubmit(): void {
     if (this.contactForm.invalid) {
       this.markAllFieldsAsTouched();
       return;
     }
 
-    // Verificar si puede enviar antes de proceder
-    if (!this.emailService.canSendEmail()) {
-      const stats = this.emailService.getEmailStats();
-      this.showMessage(
-        `Has alcanzado el límite diario de ${stats.maxDaily} emails. Intenta mañana.`,
-        'error'
-      );
+    // Honeypot check: silently fake success to avoid revealing bot detection
+    if (this.contactForm.get('_hp')?.value) {
+      this.handleSuccessResponse();
+      return;
+    }
+
+    const rateLimitStatus = this.emailService.getRateLimitStatus();
+    if (!rateLimitStatus.canSend) {
+      this.showMessage(rateLimitStatus.message || 'Rate limit exceeded', 'error');
+      if (rateLimitStatus.cooldownRemaining > 0) {
+        this.startCooldownTimer();
+      }
       return;
     }
 
     this.isLoading = true;
     this.submitMessage = '';
 
-    const emailData: Email = this.contactForm.value;
+    const emailData: Email = {
+      name: this.name!.value.trim(),
+      email: this.email!.value.trim().toLowerCase(),
+      subject: this.subject!.value,
+      message: this.message!.value.trim(),
+    };
 
     this.emailService.sendEmail(emailData).subscribe({
       next: () => {
@@ -90,9 +141,10 @@ export class ContactComponent implements OnInit {
       '¡Mensaje enviado exitosamente! Te contactaremos pronto.',
       'success'
     );
+    this.startCooldownTimer();
 
     // Auto reset después de 5 segundos
-    setTimeout(() => {
+    this.resetTimeout = setTimeout(() => {
       this.resetForm();
     }, 5000);
   }
@@ -107,6 +159,9 @@ export class ContactComponent implements OnInit {
       error.message || 'No se pudo enviar el mensaje. Contactanos directamente.',
       'error'
     );
+    if (error.rateLimited && this.emailService.getCooldownRemaining() > 0) {
+      this.startCooldownTimer();
+    }
   }
 
   /**
@@ -114,8 +169,9 @@ export class ContactComponent implements OnInit {
    */
   private markAllFieldsAsTouched(): void {
     Object.keys(this.contactForm.controls).forEach((key) => {
-      const control = this.contactForm.get(key);
-      control?.markAsTouched();
+      if (key !== '_hp') {
+        this.contactForm.get(key)?.markAsTouched();
+      }
     });
   }
 
@@ -126,8 +182,9 @@ export class ContactComponent implements OnInit {
     this.submitMessage = message;
     this.submitMessageType = type;
 
+    if (this.messageTimeout) clearTimeout(this.messageTimeout);
     // Auto hide después de 8 segundos
-    setTimeout(() => {
+    this.messageTimeout = setTimeout(() => {
       this.submitMessage = '';
     }, 8000);
   }
@@ -148,6 +205,12 @@ export class ContactComponent implements OnInit {
       control?.markAsUntouched();
       control?.markAsPristine();
     });
+  }
+
+  private clearTimers(): void {
+    if (this.cooldownInterval) clearInterval(this.cooldownInterval);
+    if (this.messageTimeout) clearTimeout(this.messageTimeout);
+    if (this.resetTimeout) clearTimeout(this.resetTimeout);
   }
 
   /**

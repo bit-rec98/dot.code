@@ -69,8 +69,14 @@
               <span *ngIf="name?.errors?.['required']"
                 >El nombre es obligatorio</span
               >
+              <span *ngIf="name?.errors?.['whitespace']"
+                >El nombre no puede contener solo espacios</span
+              >
               <span *ngIf="name?.errors?.['minlength']"
                 >El nombre debe tener al menos 3 caracteres</span
+              >
+              <span *ngIf="name?.errors?.['maxlength']"
+                >El nombre no puede superar los 100 caracteres</span
               >
             </div>
           </div>
@@ -153,21 +159,48 @@
               <span *ngIf="message?.errors?.['required']"
                 >El mensaje es obligatorio</span
               >
+              <span *ngIf="message?.errors?.['whitespace']"
+                >El mensaje no puede contener solo espacios</span
+              >
               <span *ngIf="message?.errors?.['minlength']"
                 >El mensaje debe tener al menos 10 caracteres</span
+              >
+              <span *ngIf="message?.errors?.['maxlength']"
+                >El mensaje no puede superar los 2000 caracteres</span
               >
             </div>
           </div>
 
+          <!-- Honeypot anti-spam field (visually hidden) -->
+          <div class="honeypot-field" aria-hidden="true">
+            <label for="website">Website</label>
+            <input
+              type="text"
+              id="website"
+              formControlName="_hp"
+              tabindex="-1"
+              autocomplete="off"
+            />
+          </div>
+
           <!-- Submit button -->
-          <button
-            type="submit"
-            [disabled]="isLoading || formSubmitted || !canSendEmail()"
-            class="w-full border-2 border-white py-3 font-mono text-sm uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <span *ngIf="!isLoading">[ ENVIAR MENSAJE ]</span>
-            <span *ngIf="isLoading">[ ENVIANDO... ]</span>
-          </button>
+          <div>
+            <button
+              type="submit"
+              [disabled]="isSubmitDisabled"
+              class="w-full border-2 border-white py-3 font-mono text-sm uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span *ngIf="isLoading">[ ENVIANDO... ]</span>
+              <span *ngIf="!isLoading && cooldownSeconds > 0">[ ESPERAR {{ cooldownSeconds }}s ]</span>
+              <span *ngIf="!isLoading && cooldownSeconds === 0">[ ENVIAR MENSAJE ]</span>
+            </button>
+            <div
+              *ngIf="getEmailStats().todayCount > 0"
+              class="mt-2 text-xs font-mono text-white/40 text-right"
+            >
+              {{ getEmailStats().remainingToday }} / {{ getEmailStats().maxDaily }} envíos disponibles hoy
+            </div>
+          </div>
         </form>
       </div>
 

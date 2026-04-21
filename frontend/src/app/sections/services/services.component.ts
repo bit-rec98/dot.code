@@ -6,6 +6,8 @@ import {
   AfterViewInit,
   ChangeDetectorRef,
   HostListener,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ServiceModel } from '../../core/models';
@@ -19,17 +21,18 @@ import { ServiceModel } from '../../core/models';
 })
 export class ServicesComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() services: ServiceModel[] = [];
+  @Output() scrollToContact = new EventEmitter<void>();
   private windowWidth = 0;
 
-  constructor(private cdRef: ChangeDetectorRef) {}
+  constructor(private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.windowWidth = window.innerWidth;
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   @HostListener('window:resize')
   onWindowResize(): void {
@@ -50,5 +53,9 @@ export class ServicesComponent implements OnInit, OnDestroy, AfterViewInit {
       left: carousel.clientWidth * direction,
       behavior: 'smooth',
     });
+  }
+
+  onContactClick(): void {
+    this.scrollToContact.emit();
   }
 }

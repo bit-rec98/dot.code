@@ -1,12 +1,12 @@
-<app-cta (contactClick)="onContactClick()"></app-cta>
+<app-cta (scrollToContact)="onContactClick()"></app-cta>
 
 <hr class="my-4" />
 
-<app-services [services]="services"></app-services>
+<app-services [services]="services" (scrollToContact)="onContactClick()"></app-services>
 
 <hr class="my-4" />
 
-<app-portfolio [projects]="projects"></app-portfolio>
+<app-portfolio [projects]="projects" (scrollToContact)="onContactClick()"></app-portfolio>
 
 <hr class="my-4" />
 
