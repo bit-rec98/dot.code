@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SidenavComponent } from '../../components/sidenav/sidenav.component';
-import { ViewportScroller } from '@angular/common';
+import { ScrollSectionService } from '../../core/services/scroll-section.service';
 
 @Component({
   selector: 'app-header',
@@ -10,6 +10,8 @@ import { ViewportScroller } from '@angular/common';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
+  private scrollService = inject(ScrollSectionService);
+
   isSidenavOpen = false;
 
   menuItems = [
@@ -18,8 +20,6 @@ export class HeaderComponent {
     { label: 'Nosotros', section: 'aboutSection' },
     { label: 'Contacto', section: 'contactSection' },
   ];
-
-  constructor(private viewportScroller: ViewportScroller) {}
 
   toggleSidenav(): void {
     this.isSidenavOpen = !this.isSidenavOpen;
@@ -30,19 +30,7 @@ export class HeaderComponent {
   }
 
   scrollToSection(sectionId: string): void {
-    // Cierra el sidenav si está abierto
     this.closeSidenav();
-
-    // Pequeño retraso para asegurar que la navegación funcione correctamente
-    setTimeout(() => {
-      // Desplazamiento suave a la sección
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
-      }
-    }, 100);
+    this.scrollService.scrollToSection(sectionId);
   }
 }
