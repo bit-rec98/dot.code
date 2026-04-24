@@ -13,49 +13,49 @@
 
     <!-- Services Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div *ngFor="let service of services; let i = index"
-        class="border border-white/20 p-6 hover:border-white/40 transition-all duration-300 group relative overflow-hidden flex flex-col h-full min-h-[400px]">
-        <!-- Hover effect -->
+      @for (service of services; track service; let i = $index) {
         <div
-          class="absolute inset-0 bg-white/5 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-        </div>
-
-        <div class="relative z-10 flex flex-col h-full">
-          <!-- Service number -->
-          <div class="text-xs font-mono text-white/50 mb-2">
-            [ {{ (i + 1).toString().padStart(2, '0') }} ]
+          class="border border-white/20 p-6 hover:border-white/40 transition-all duration-300 group relative overflow-hidden flex flex-col h-full min-h-[400px]">
+          <!-- Hover effect -->
+          <div
+            class="absolute inset-0 bg-white/5 transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
           </div>
-
-          <!-- Service title -->
-          <h3 class="text-lg font-mono font-bold text-white mb-4 uppercase tracking-wider">
-            {{ service.title }}
-          </h3>
-
-          <!-- Service description -->
-          <p class="text-sm font-mono text-white/70 mb-6 leading-relaxed">
-            {{ service.description }}
-          </p>
-
-          <!-- Features -->
-          <div class="mb-6 flex-grow" *ngIf="service.features">
-            <div class="flex flex-wrap gap-2">
-              <span *ngFor="let feature of service.features"
-                class="text-xs font-mono border border-white/30 text-white/80 px-2 py-1 uppercase tracking-wider">
-                {{ feature }}
-              </span>
+          <div class="relative z-10 flex flex-col h-full">
+            <!-- Service number -->
+            <div class="text-xs font-mono text-white/50 mb-2">
+              [ {{ (i + 1).toString().padStart(2, '0') }} ]
             </div>
+            <!-- Service title -->
+            <h3 class="text-lg font-mono font-bold text-white mb-4 uppercase tracking-wider">
+              {{ service.title }}
+            </h3>
+            <!-- Service description -->
+            <p class="text-sm font-mono text-white/70 mb-6 leading-relaxed">
+              {{ service.description }}
+            </p>
+            <!-- Features -->
+            @if (service.features) {
+              <div class="mb-6 flex-grow">
+                <div class="flex flex-wrap gap-2">
+                  @for (feature of service.features; track feature) {
+                    <span
+                      class="text-xs font-mono border border-white/30 text-white/80 px-2 py-1 uppercase tracking-wider">
+                      {{ feature }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+            <!-- Spacer to push button to bottom -->
+            <div class="flex-grow"></div>
+            <!-- Action button -->
+            <button type="button" (click)="onContactClick()"
+              class="w-full border border-white/30 py-2 font-mono text-sm uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all duration-300 mt-auto">
+              [ MÁS INFORMACIÓN ]
+            </button>
           </div>
-
-          <!-- Spacer to push button to bottom -->
-          <div class="flex-grow"></div>
-
-          <!-- Action button -->
-          <button type="button" (click)="onContactClick()"
-            class="w-full border border-white/30 py-2 font-mono text-sm uppercase tracking-wider text-white hover:bg-white hover:text-black transition-all duration-300 mt-auto">
-            [ MÁS INFORMACIÓN ]
-          </button>
         </div>
-      </div>
+      }
     </div>
   </article>
 </section>

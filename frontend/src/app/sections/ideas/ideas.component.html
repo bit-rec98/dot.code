@@ -13,64 +13,62 @@
 
     <!-- Ideas Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div
-        *ngFor="let idea of displayedIdeas; let i = index"
-        class="border border-white/20 p-6 hover:border-white/40 transition-all duration-300 group relative overflow-hidden flex flex-col min-h-[400px]"
+      @for (idea of displayedIdeas; track idea; let i = $index) {
+        <div
+          class="border border-white/20 p-6 hover:border-white/40 transition-all duration-300 group relative overflow-hidden flex flex-col min-h-[400px]"
         [ngClass]="{
           'opacity-50': isIdeaChanging && i === currentIdeaChangingIndex
         }"
-      >
-        <!-- Innovation indicator -->
-        <div
-          class="absolute top-4 right-4 w-2 h-2 bg-white/50 animate-pulse"
-        ></div>
-
-        <!-- Idea number -->
-        <div class="text-xs font-mono text-white/50 mb-4">
-          [ CONCEPTO_{{ (i + 1).toString().padStart(2, "0") }} ]
-        </div>
-
-        <!-- Idea title -->
-        <h3
-          class="text-lg font-mono font-bold text-white mb-4 uppercase tracking-wider"
-        >
-          {{ idea.title }}
-        </h3>
-
-        <!-- Idea description -->
-        <p class="text-sm font-mono text-white/70 mb-6 leading-relaxed">
-          {{ idea.description }}
-        </p>
-
-        <!-- Tools -->
-        <div class="mb-6" *ngIf="idea.tools && idea.tools.length > 0">
-          <div class="text-xs font-mono text-white/50 mb-2">[ HERRAMIENTAS ]</div>
-          <div class="flex flex-wrap gap-2">
-            <span
-              *ngFor="let tool of idea.tools"
-              class="text-xs font-mono border border-white/30 text-white/80 px-2 py-1"
+          >
+          <!-- Innovation indicator -->
+          <div
+            class="absolute top-4 right-4 w-2 h-2 bg-white/50 animate-pulse"
+          ></div>
+          <!-- Idea number -->
+          <div class="text-xs font-mono text-white/50 mb-4">
+            [ CONCEPTO_{{ (i + 1).toString().padStart(2, "0") }} ]
+          </div>
+          <!-- Idea title -->
+          <h3
+            class="text-lg font-mono font-bold text-white mb-4 uppercase tracking-wider"
             >
-              {{ tool }}
-            </span>
+            {{ idea.title }}
+          </h3>
+          <!-- Idea description -->
+          <p class="text-sm font-mono text-white/70 mb-6 leading-relaxed">
+            {{ idea.description }}
+          </p>
+          <!-- Tools -->
+          @if (idea.tools && idea.tools.length > 0) {
+            <div class="mb-6">
+              <div class="text-xs font-mono text-white/50 mb-2">[ HERRAMIENTAS ]</div>
+              <div class="flex flex-wrap gap-2">
+                @for (tool of idea.tools; track tool) {
+                  <span
+                    class="text-xs font-mono border border-white/30 text-white/80 px-2 py-1"
+                    >
+                    {{ tool }}
+                  </span>
+                }
+              </div>
+            </div>
+          }
+          <!-- Spacer to push status indicator to bottom -->
+          <div class="flex-grow"></div>
+          <!-- Status indicator -->
+          <div class="flex items-center text-xs font-mono text-white/50 mt-auto">
+            <div class="w-1 h-1 bg-white/50 mr-2"></div>
+            <span>[ ETAPA CONCEPTUAL ]</span>
           </div>
         </div>
-
-        <!-- Spacer to push status indicator to bottom -->
-        <div class="flex-grow"></div>
-
-        <!-- Status indicator -->
-        <div class="flex items-center text-xs font-mono text-white/50 mt-auto">
-          <div class="w-1 h-1 bg-white/50 mr-2"></div>
-          <span>[ ETAPA CONCEPTUAL ]</span>
-        </div>
-      </div>
+      }
     </div>
 
     <!-- Auto-rotation indicator -->
     <div class="text-center mt-12">
       <div
         class="inline-flex items-center text-xs font-mono text-white/50 uppercase tracking-wider"
-      >
+        >
         <div class="w-1 h-1 bg-white/50 animate-pulse mr-2"></div>
         <span>Las ideas se actualizan automáticamente para mostrar diferentes conceptos</span>
         <div class="w-1 h-1 bg-white/50 animate-pulse ml-2"></div>

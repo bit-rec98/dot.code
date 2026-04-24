@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { DataService } from '../../core/services/data.service';
 import { ProjectModel } from '../../core/models/project';
 import { FAQModel } from '../../core/models/faq';
@@ -20,7 +20,6 @@ import { TechnologyModel } from '../../core/models/technology';
   selector: 'app-home',
   standalone: true,
   imports: [
-    CommonModule,
     CtaComponent,
     ServicesComponent,
     PortfolioComponent,
@@ -28,8 +27,8 @@ import { TechnologyModel } from '../../core/models/technology';
     TechnologiesComponent,
     FaqComponent,
     IdeasComponent,
-    ContactComponent,
-  ],
+    ContactComponent
+],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })

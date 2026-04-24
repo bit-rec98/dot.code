@@ -17,30 +17,31 @@
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 max-w-4xl mx-auto"
         (mouseenter)="pauseShuffle()"
         (mouseleave)="resumeShuffle()"
-      >
-        <div
-          *ngFor="let tech of visibleTechnologies; let i = index"
-          class="tech-item text-center"
-          [ngClass]="{ 'fade-in': tech.animating, 'fade-out': tech.exiting }"
         >
+        @for (tech of visibleTechnologies; track tech; let i = $index) {
           <div
-            class="w-16 h-16 border border-white/30 flex items-center justify-center mb-3 mx-auto hover:border-white/50 transition-colors"
-          >
+            class="tech-item text-center"
+            [ngClass]="{ 'fade-in': tech.animating, 'fade-out': tech.exiting }"
+            >
             <div
-              *ngIf="logoSvgMap.get(tech.logo); else logoFallback"
-              [innerHTML]="logoSvgMap.get(tech.logo)"
-              class="w-8 h-8 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full opacity-70 hover:opacity-100 transition-opacity"
-            ></div>
-            <ng-template #logoFallback>
-              <div class="w-8 h-8 bg-white/10 rounded animate-pulse"></div>
-            </ng-template>
+              class="w-16 h-16 border border-white/30 flex items-center justify-center mb-3 mx-auto hover:border-white/50 transition-colors"
+              >
+              @if (logoSvgMap.get(tech.logo)) {
+                <div
+                  [innerHTML]="logoSvgMap.get(tech.logo)"
+                  class="w-8 h-8 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full opacity-70 hover:opacity-100 transition-opacity"
+                ></div>
+              } @else {
+                <div class="w-8 h-8 bg-white/10 rounded animate-pulse"></div>
+              }
+            </div>
+            <span
+              class="text-xs font-mono text-white/60 uppercase tracking-wider"
+              >
+              {{ tech.name }}
+            </span>
           </div>
-          <span
-            class="text-xs font-mono text-white/60 uppercase tracking-wider"
-          >
-            {{ tech.name }}
-          </span>
-        </div>
+        }
       </div>
     </div>
 

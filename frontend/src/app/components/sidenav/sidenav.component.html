@@ -10,7 +10,7 @@
   class="fixed inset-y-0 left-0 w-80 bg-black border-r border-white/20 z-50 transform transition-transform duration-300 ease-in-out"
   [class.translate-x-0]="isOpen"
   [class.translate-x-[-100%]]="!isOpen"
->
+  >
   <div class="p-6">
     <!-- Header -->
     <div class="flex justify-between items-center mb-8 border-b border-white/20 pb-4">
@@ -19,7 +19,7 @@
         (click)="close()"
         class="p-2 text-white hover:text-white/70 transition-colors"
         aria-label="Close menu"
-      >
+        >
         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -28,13 +28,14 @@
 
     <!-- Menu items -->
     <nav class="space-y-4">
-      <a
-        *ngFor="let item of menuItems"
-        (click)="scrollToSection(item.section); close()"
-        class="block py-2 text-sm font-mono uppercase tracking-wider text-white/70 hover:text-white transition-colors cursor-pointer"
-      >
-        > {{ item.label }}
-      </a>
+      @for (item of menuItems; track item) {
+        <a
+          (click)="scrollToSection(item.section); close()"
+          class="block py-2 text-sm font-mono uppercase tracking-wider text-white/70 hover:text-white transition-colors cursor-pointer"
+          >
+          > {{ item.label }}
+        </a>
+      }
     </nav>
   </div>
 </div>
