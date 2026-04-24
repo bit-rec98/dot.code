@@ -1,7 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { RouterLink } from '@angular/router';
-
 @Component({
   selector: 'app-sidenav',
   standalone: true,
@@ -12,8 +10,8 @@ import { RouterLink } from '@angular/router';
 export class SidenavComponent {
   menuItems = [
     { label: 'Home', section: 'ctaSection' },
-    { label: 'About', section: 'aboutSection' },
     { label: 'Services', section: 'servicesSection' },
+    { label: 'About', section: 'aboutSection' },
     { label: 'Contact', section: 'contactSection' },
   ];
 

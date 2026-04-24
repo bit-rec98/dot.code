@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { ScrollSectionService } from '../../core/services/scroll-section.service';
 
 @Component({
   selector: 'app-footer',
@@ -8,5 +9,9 @@ import { Component } from '@angular/core';
   styleUrl: './footer.component.scss'
 })
 export class FooterComponent {
+  private scrollService = inject(ScrollSectionService);
 
+  scrollToSection(sectionId: string): void {
+    this.scrollService.scrollToSection(sectionId);
+  }
 }
