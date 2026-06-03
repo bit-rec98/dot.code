@@ -197,14 +197,6 @@ export class ContactComponent implements OnInit, OnDestroy {
     this.formSubmitted = false;
     this.submitMessage = '';
     this.showDirectContact = false;
-
-    // Reset validation states
-    Object.keys(this.contactForm.controls).forEach((key) => {
-      const control = this.contactForm.get(key);
-      control?.setErrors(null);
-      control?.markAsUntouched();
-      control?.markAsPristine();
-    });
   }
 
   private clearTimers(): void {

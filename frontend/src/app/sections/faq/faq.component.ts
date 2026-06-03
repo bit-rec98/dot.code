@@ -27,6 +27,7 @@ export class FaqComponent
   @Output() scrollToContact = new EventEmitter<void>();
 
   displayedFAQs: FAQModel[] = [];
+  private remainingQueue: FAQModel[] = [];
   faqInterval: any;
   currentFAQChangingIndex = 0;
   isFAQChanging = false;
@@ -53,27 +54,12 @@ export class FaqComponent
 
   private initializeFAQs(): void {
     this.displayedFAQs = this.allFAQs.slice(0, 6);
-    this.shuffleRemainingFAQs();
-  }
-
-  private shuffleRemainingFAQs(): void {
-    const displayedQuestions = new Set(
-      this.displayedFAQs.map((faq) => faq.question)
-    );
-    const remainingFAQs = this.allFAQs.filter(
-      (faq) => !displayedQuestions.has(faq.question)
-    );
-
-    // Fisher-Yates shuffle algorithm
-    for (let i = remainingFAQs.length - 1; i > 0; i--) {
+    const remaining = this.allFAQs.slice(6);
+    for (let i = remaining.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [remainingFAQs[i], remainingFAQs[j]] = [
-        remainingFAQs[j],
-        remainingFAQs[i],
-      ];
+      [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
     }
-
-    this.allFAQs = [...this.displayedFAQs, ...remainingFAQs];
+    this.remainingQueue = remaining;
   }
 
   private startFAQsCycle(): void {
@@ -89,13 +75,19 @@ export class FaqComponent
   }
 
   private changeRandomFAQ(): void {
+    if (this.remainingQueue.length === 0) return;
     this.isFAQChanging = true;
     this.currentFAQChangingIndex = Math.floor(Math.random() * 6);
 
     setTimeout(() => {
-      const nextFAQ = this.allFAQs[6];
-      this.allFAQs.push(this.allFAQs.shift()!);
-      this.displayedFAQs[this.currentFAQChangingIndex] = nextFAQ;
+      const incoming = this.remainingQueue.shift()!;
+      const outgoing = this.displayedFAQs[this.currentFAQChangingIndex];
+      this.remainingQueue.push(outgoing);
+      this.displayedFAQs = [
+        ...this.displayedFAQs.slice(0, this.currentFAQChangingIndex),
+        incoming,
+        ...this.displayedFAQs.slice(this.currentFAQChangingIndex + 1),
+      ];
       this.isFAQChanging = false;
       this.cdRef.detectChanges();
     }, 500);
