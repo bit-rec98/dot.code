@@ -28,7 +28,7 @@
 
     <!-- Menu items -->
     <nav class="space-y-4">
-      @for (item of menuItems; track item) {
+      @for (item of menuItems; track item.section) {
         <a
           (click)="scrollToSection(item.section); close()"
           class="block py-2 text-sm font-mono uppercase tracking-wider text-white/70 hover:text-white transition-colors cursor-pointer"

@@ -19,6 +19,7 @@ import { IdeaModel } from '../../core/models/idea';
 export class IdeasComponent implements OnInit, OnDestroy, AfterViewInit {
   allIdeas: IdeaModel[] = [];
   displayedIdeas: IdeaModel[] = [];
+  private remainingQueue: IdeaModel[] = [];
   ideaInterval: any;
   currentIdeaChangingIndex = 0;
   isIdeaChanging = false;
@@ -46,29 +47,14 @@ export class IdeasComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private initializeIdeas(): void {
-    // Mostrar las primeras 6 ideas (2x3 grid)
     this.displayedIdeas = this.allIdeas.slice(0, 6);
-    this.shuffleRemainingIdeas();
-  }
-
-  private shuffleRemainingIdeas(): void {
-    const displayedTitles = new Set(
-      this.displayedIdeas.map((idea) => idea.title)
-    );
-    const remainingIdeas = this.allIdeas.filter(
-      (idea) => !displayedTitles.has(idea.title)
-    );
-
-    // Fisher-Yates shuffle
-    for (let i = remainingIdeas.length - 1; i > 0; i--) {
+    const remaining = this.allIdeas.slice(6);
+    // Fisher-Yates shuffle of the remaining queue
+    for (let i = remaining.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [remainingIdeas[i], remainingIdeas[j]] = [
-        remainingIdeas[j],
-        remainingIdeas[i],
-      ];
+      [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
     }
-
-    this.allIdeas = [...this.displayedIdeas, ...remainingIdeas];
+    this.remainingQueue = remaining;
   }
 
   private startIdeasCycle(): void {
@@ -84,13 +70,19 @@ export class IdeasComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private changeRandomIdea(): void {
+    if (this.remainingQueue.length === 0) return;
     this.isIdeaChanging = true;
     this.currentIdeaChangingIndex = Math.floor(Math.random() * 6);
 
     setTimeout(() => {
-      const nextIdea = this.allIdeas[6];
-      this.allIdeas.push(this.allIdeas.shift()!);
-      this.displayedIdeas[this.currentIdeaChangingIndex] = nextIdea;
+      const incoming = this.remainingQueue.shift()!;
+      const outgoing = this.displayedIdeas[this.currentIdeaChangingIndex];
+      this.remainingQueue.push(outgoing);
+      this.displayedIdeas = [
+        ...this.displayedIdeas.slice(0, this.currentIdeaChangingIndex),
+        incoming,
+        ...this.displayedIdeas.slice(this.currentIdeaChangingIndex + 1),
+      ];
       this.isIdeaChanging = false;
       this.cdRef.detectChanges();
     }, 500);

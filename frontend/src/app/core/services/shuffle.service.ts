@@ -9,6 +9,7 @@ export class ShuffleService {
   // Ideas innovadoras
   allIdeas: IdeaModel[] = [];
   displayedIdeas: IdeaModel[] = [];
+  private remainingQueue: IdeaModel[] = [];
 
   // Control de transiciones
   ideasInterval: any;
@@ -22,33 +23,13 @@ export class ShuffleService {
    */
   initializeIdeas(ideas: IdeaModel[]): void {
     this.allIdeas = [...ideas];
-    // Seleccionar las primeras 6 ideas para mostrar (3x2 grid)
     this.displayedIdeas = this.allIdeas.slice(0, 6);
-
-    // Barajar las ideas restantes
-    this.shuffleRemainingIdeas();
-  }
-
-  /**
-   * Barajar ideas para asegurar variedad
-   */
-  shuffleRemainingIdeas(): void {
-    const displayedIds = new Set(this.displayedIdeas.map((idea) => idea.title));
-    const remainingIdeas = this.allIdeas.filter(
-      (idea) => !displayedIds.has(idea.title)
-    );
-
-    // Fisher-Yates shuffle algorithm
-    for (let i = remainingIdeas.length - 1; i > 0; i--) {
+    const remaining = this.allIdeas.slice(6);
+    for (let i = remaining.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [remainingIdeas[i], remainingIdeas[j]] = [
-        remainingIdeas[j],
-        remainingIdeas[i],
-      ];
+      [remaining[i], remaining[j]] = [remaining[j], remaining[i]];
     }
-
-    // Guardar las ideas barajadas
-    this.allIdeas = [...this.displayedIdeas, ...remainingIdeas];
+    this.remainingQueue = remaining;
   }
 
   /**
@@ -73,26 +54,21 @@ export class ShuffleService {
    * Cambiar una idea aleatoria con una nueva
    */
   changeRandomIdea(): void {
-    // Marcar que está cambiando para la animación
+    if (this.remainingQueue.length === 0) return;
     this.isIdeaChanging = true;
-
-    // Seleccionar un índice aleatorio para cambiar
     this.currentChangingIndex = Math.floor(Math.random() * 6);
 
-    // Después de un tiempo para la animación de salida
     setTimeout(() => {
-      // Obtener la siguiente idea disponible
-      const nextIdea = this.allIdeas[6]; // La primera idea que no se está mostrando
-
-      // Rotar el array de todas las ideas
-      this.allIdeas.push(this.allIdeas.shift()!);
-
-      // Actualizar la idea en la posición actual
-      this.displayedIdeas[this.currentChangingIndex] = nextIdea;
-
-      // Reactivar la animación de entrada
+      const incoming = this.remainingQueue.shift()!;
+      const outgoing = this.displayedIdeas[this.currentChangingIndex];
+      this.remainingQueue.push(outgoing);
+      this.displayedIdeas = [
+        ...this.displayedIdeas.slice(0, this.currentChangingIndex),
+        incoming,
+        ...this.displayedIdeas.slice(this.currentChangingIndex + 1),
+      ];
       this.isIdeaChanging = false;
-    }, 500); // Medio segundo para la transición
+    }, 500);
   }
 
   /**

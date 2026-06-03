@@ -13,7 +13,7 @@
 
     <!-- Services Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for (service of services; track service; let i = $index) {
+      @for (service of services; track service.title; let i = $index) {
         <div
           class="border border-white/20 p-6 hover:border-white/40 transition-all duration-300 group relative overflow-hidden flex flex-col h-full min-h-[400px]">
           <!-- Hover effect -->

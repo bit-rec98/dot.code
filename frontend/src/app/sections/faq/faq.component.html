@@ -13,7 +13,7 @@
 
     <!-- FAQ Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      @for (faq of displayedFAQs; track faq; let i = $index) {
+      @for (faq of displayedFAQs; track faq.question; let i = $index) {
         <div
           class="border border-white/20 p-6 hover:border-white/40 transition-all duration-300 group"
           >

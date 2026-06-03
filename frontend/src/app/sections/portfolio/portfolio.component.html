@@ -13,7 +13,7 @@
 
     <!-- Projects Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for (project of projects; track project; let i = $index) {
+      @for (project of projects; track project.title; let i = $index) {
         <div
           class="border border-white/20 overflow-hidden hover:border-white/40 transition-all duration-300 group flex flex-col min-h-[400px]"
           >

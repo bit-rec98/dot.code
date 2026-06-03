@@ -13,7 +13,7 @@
 
     <!-- Ideas Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      @for (idea of displayedIdeas; track idea; let i = $index) {
+      @for (idea of displayedIdeas; track idea.title; let i = $index) {
         <div
           class="border border-white/20 p-6 hover:border-white/40 transition-all duration-300 group relative overflow-hidden flex flex-col min-h-[400px]"
         [ngClass]="{
